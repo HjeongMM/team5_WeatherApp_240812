@@ -110,10 +110,8 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
 }
 
 
-
 import SwiftUI
 
-// ListView를 SwiftUI에서 미리보기 위한 UIViewRepresentable
 struct ListViewRepresentable: UIViewRepresentable {
     
     func makeUIView(context: Context) -> UIView {
@@ -121,16 +119,14 @@ struct ListViewRepresentable: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-        // 필요한 경우, 여기에서 UI를 업데이트할 수 있습니다.
     }
 }
 
-// SwiftUI PreviewProvider 설정
 struct ListView_Previews: PreviewProvider {
     static var previews: some View {
         ListViewRepresentable()
-            .edgesIgnoringSafeArea(.all) // 미리보기에서 전체 화면에 표시되도록 설정
-            .previewDevice("iPhone 14") // 미리볼 기기 설정
+            .edgesIgnoringSafeArea(.all)
+            .previewDevice("iPhone 14")
             .previewDisplayName("iPhone 14 - iOS 16")
     }
 }
