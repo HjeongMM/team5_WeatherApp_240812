@@ -56,14 +56,14 @@ class MainView: UIViewController {
         view.addSubview(weatherIcon)
         view.addSubview(tempLabel)
         
-        weatherIcon.snp.makeConstraints { make in
-            make.top.centerX.equalToSuperview()
-            make.size.equalTo(CGSize(width: 40, height: 40))
+        weatherIcon.snp.makeConstraints {
+            $0.top.centerX.equalToSuperview()
+            $0.size.equalTo(CGSize(width: 40, height: 40))
         }
         
-        tempLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherIcon.snp.bottom).offset(8)
-            make.leading.trailing.bottom.equalToSuperview().inset(8)
+        tempLabel.snp.makeConstraints {
+            $0.top.equalTo(weatherIcon.snp.bottom).offset(8)
+            $0.leading.trailing.bottom.equalToSuperview().inset(8)
         }
         
         return view
@@ -86,28 +86,28 @@ class MainView: UIViewController {
         view.addSubview(locationLabel)
         view.addSubview(weatherStatusView)
         
-        collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(100)
+        collectionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(100)
         }
         
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(300)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        tableView.snp.makeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(300)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
-        locationLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.centerX.equalToSuperview()
+        locationLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.centerX.equalToSuperview()
         }
         
-        weatherStatusView.snp.makeConstraints { make in
-            make.top.equalTo(locationLabel.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-            make.width.equalToSuperview().multipliedBy(0.8)
-            make.height.equalTo(300)
+        weatherStatusView.snp.makeConstraints {
+            $0.top.equalTo(locationLabel.snp.bottom).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview().multipliedBy(0.8)
+            $0.height.equalTo(300)
         }
     }
 }

@@ -41,20 +41,20 @@ class WeatherCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(weatherButton)
         contentView.addSubview(tempButton)
         
-        timeButton.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(20)
+        timeButton.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.height.equalTo(20)
         }
         
-        weatherButton.snp.makeConstraints { make in
-            make.top.equalTo(timeButton.snp.bottom).offset(5)
-            make.centerX.equalToSuperview()
-            make.size.equalTo(CGSize(width: 30, height: 30))
+        weatherButton.snp.makeConstraints {
+            $0.top.equalTo(timeButton.snp.bottom).offset(5)
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(CGSize(width: 30, height: 30))
         }
         
-        tempButton.snp.makeConstraints { make in
-            make.top.equalTo(weatherButton.snp.bottom).offset(5)
-            make.leading.trailing.bottom.equalToSuperview()
+        tempButton.snp.makeConstraints {
+            $0.top.equalTo(weatherButton.snp.bottom).offset(5)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         timeButton.addTarget(self, action: #selector(timeButtonTapped), for: .touchUpInside)
