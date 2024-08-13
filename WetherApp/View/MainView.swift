@@ -97,6 +97,7 @@ class MainView: UIViewController {
             make.height.equalTo(300)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+        
         locationLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.centerX.equalToSuperview()
