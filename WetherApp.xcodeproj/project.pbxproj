@@ -7,16 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4536F2182C6A36E100E20A2B /* DetailDayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4536F2172C6A36E100E20A2B /* DetailDayViewController.swift */; };
+		4536F21C2C6A372000E20A2B /* DetailDaySectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4536F21B2C6A372000E20A2B /* DetailDaySectionHeaderView.swift */; };
+		4536F24F2C6AE8C900E20A2B /* WeaterDetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4536F24E2C6AE8C900E20A2B /* WeaterDetailCollectionViewCell.swift */; };
 		E5ACDC362C69E1A700BB9484 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACDC352C69E1A700BB9484 /* AppDelegate.swift */; };
 		E5ACDC3A2C69E1A700BB9484 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACDC392C69E1A700BB9484 /* MainViewController.swift */; };
 		E5ACDC3F2C69E1A900BB9484 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5ACDC3E2C69E1A900BB9484 /* Assets.xcassets */; };
 		E5ACDC422C69E1A900BB9484 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E5ACDC412C69E1A900BB9484 /* Base */; };
 		E5ACDC4B2C69E22900BB9484 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E5ACDC4A2C69E22900BB9484 /* SnapKit */; };
-		E5ACDC4D2C69E22A00BB9484 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E5ACDC4C2C69E22900BB9484 /* SnapKit-Dynamic */; };
 		E5ACDC522C69E37E00BB9484 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACDC512C69E37E00BB9484 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4536F2172C6A36E100E20A2B /* DetailDayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDayViewController.swift; sourceTree = "<group>"; };
+		4536F21B2C6A372000E20A2B /* DetailDaySectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDaySectionHeaderView.swift; sourceTree = "<group>"; };
+		4536F24E2C6AE8C900E20A2B /* WeaterDetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaterDetailCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5ACDC322C69E1A700BB9484 /* WetherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WetherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5ACDC352C69E1A700BB9484 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5ACDC392C69E1A700BB9484 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -32,13 +37,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5ACDC4B2C69E22900BB9484 /* SnapKit in Frameworks */,
-				E5ACDC4D2C69E22A00BB9484 /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4536F2162C6A367500E20A2B /* DetailDayView */ = {
+			isa = PBXGroup;
+			children = (
+				4536F2172C6A36E100E20A2B /* DetailDayViewController.swift */,
+				4536F21B2C6A372000E20A2B /* DetailDaySectionHeaderView.swift */,
+				4536F24E2C6AE8C900E20A2B /* WeaterDetailCollectionViewCell.swift */,
+			);
+			path = DetailDayView;
+			sourceTree = "<group>";
+		};
 		E5ACDC292C69E1A700BB9484 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				E5ACDC512C69E37E00BB9484 /* MainView.swift */,
+				4536F2162C6A367500E20A2B /* DetailDayView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -118,7 +133,6 @@
 			name = WetherApp;
 			packageProductDependencies = (
 				E5ACDC4A2C69E22900BB9484 /* SnapKit */,
-				E5ACDC4C2C69E22900BB9484 /* SnapKit-Dynamic */,
 			);
 			productName = WetherApp;
 			productReference = E5ACDC322C69E1A700BB9484 /* WetherApp.app */;
@@ -177,6 +191,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4536F2182C6A36E100E20A2B /* DetailDayViewController.swift in Sources */,
+				4536F24F2C6AE8C900E20A2B /* WeaterDetailCollectionViewCell.swift in Sources */,
+				4536F21C2C6A372000E20A2B /* DetailDaySectionHeaderView.swift in Sources */,
 				E5ACDC3A2C69E1A700BB9484 /* MainViewController.swift in Sources */,
 				E5ACDC522C69E37E00BB9484 /* MainView.swift in Sources */,
 				E5ACDC362C69E1A700BB9484 /* AppDelegate.swift in Sources */,
@@ -323,20 +340,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BU22P24JX7;
+				DEVELOPMENT_TEAM = 2FU3YA6LYJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WetherApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.mmmm.WetherApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.noah.WetherApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -351,20 +368,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BU22P24JX7;
+				DEVELOPMENT_TEAM = 2FU3YA6LYJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WetherApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = co.mmmm.WetherApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.noah.WetherApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -411,11 +428,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E5ACDC492C69E22900BB9484 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		E5ACDC4C2C69E22900BB9484 /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E5ACDC492C69E22900BB9484 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
