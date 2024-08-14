@@ -65,8 +65,9 @@ class WeatherCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // Button actions
+}
+
+extension WeatherCollectionViewCell {
     @objc private func timeButtonTapped() {
         print("Time button tapped")
     }
