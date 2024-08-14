@@ -5,16 +5,40 @@
 //  Created by 이진규 on 8/13/24.
 //
 
-import Foundation
 import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager() // 싱글톤 패턴 인스턴스를 생성
-    private let apiKey = "1ad11a058dd751ada3c5aa999ddc64a8" // API 키를 저장합니다.
+    private let apiKey = "3d1be1b2d3419223212333eb2388ba4a" // API 키를 저장합니다.
     private let baseUrl = "https://api.openweathermap.org/data/2.5" // API의 기본 URL을 저장합니다.
 
     private init() {} // 외부에서 인스턴스를 생성하지 못하도록 private 생성자를 만듭니다.
     // 자원의 낭비? api 하나 하는 것이 좋을지 두개 쓰는 것이 좋을지
+    // 공통 네트워크 요청 메서드
+    private func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
+        let session = URLSession(configuration: .default) // 기본 설정으로 URLSession 인스턴스를 생성합니다.
+        session.dataTask(with: URLRequest(url: url)) { data, response, error in
+            guard let data = data, error == nil else {
+                print("데이터 로드 실패") // 데이터 로드 실패 시 메시지 출력
+                completion(nil) // nil 반환
+                return
+            }
+            // http status code 성공 범위.
+            let successRange = 200..<300
+            if let response = response as? HTTPURLResponse, successRange.contains(response.statusCode) {
+                guard let decodedData = try? JSONDecoder().decode(T.self, from: data) else {
+                    print("JSON 디코딩 실패") // JSON 디코딩 실패 시 메시지 출력
+                    completion(nil) // nil 반환
+                    return
+                }
+                completion(decodedData) // 디코딩 성공 시 데이터를 반환
+            } else {
+                print("응답 오류") // 응답 오류 시 메시지 출력
+                completion(nil) // nil 반환
+            }
+        }.resume() // 요청 시작
+    }
+
     // 서버에서 현재 날씨 데이터를 불러오는 메서드
     func fetchCurrentWeatherData(lat: Double, lon: Double, completion: @escaping (CurrentWeatherResult?, UIImage?) -> Void) {
         // URLComponents를 사용하여 URL을 구성합니다.
@@ -64,28 +88,25 @@ class NetworkManager {
         }
     }
 
-    // 공통 네트워크 요청 메서드//클린아키텍처 공부
-    private func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
-        let session = URLSession(configuration: .default) // 기본 설정으로 URLSession 인스턴스를 생성합니다.
-        session.dataTask(with: URLRequest(url: url)) { data, response, error in
-            guard let data = data, error == nil else {
-                print("데이터 로드 실패") // 데이터 로드 실패 시 메시지 출력
-                completion(nil) // nil 반환
-                return
-            }
+    // 서버에서 5일 간의 날씨 예보 데이터를 불러오는 메서드
+    func fetchForecastData(lat: Double, lon: Double, completion: @escaping (ForecastWeatherResult?) -> Void) {
+        // URLComponents를 사용하여 URL을 구성합니다.
+        var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/forecast")
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "lat", value: "\(lat)"), // 위도
+            URLQueryItem(name: "lon", value: "\(lon)"), // 경도
+            URLQueryItem(name: "appid", value: apiKey), // API 키
+            URLQueryItem(name: "units", value: "metric") // 온도 단위를 섭씨로 설정
+        ]
 
-            let successRange = 200..<300 // HTTP 상태 코드에서 성공을 나타내는 범위
-            if let response = response as? HTTPURLResponse, successRange.contains(response.statusCode) {
-                guard let decodedData = try? JSONDecoder().decode(T.self, from: data) else {
-                    print("JSON 디코딩 실패") // JSON 디코딩 실패 시 메시지 출력
-                    completion(nil) // nil 반환
-                    return
-                }
-                completion(decodedData) // 디코딩 성공 시 데이터를 반환
-            } else {
-                print("응답 오류") // 응답 오류 시 메시지 출력
-                completion(nil) // nil 반환
-            }
-        }.resume() // 요청 시작
+        // URL이 제대로 생성되지 않은 경우 처리
+        guard let url = urlComponents?.url else {
+            print("잘못된 URL") // URL 생성 실패 시 메시지 출력
+            completion(nil) // completion 클로저를 통해 nil 반환
+            return
+        }
+
+        // 데이터를 가져오는 공통 메서드를 호출
+        fetchData(url: url, completion: completion) // 제네릭을 활용해 다양한 타입의 데이터 처리가 가능
     }
 }
