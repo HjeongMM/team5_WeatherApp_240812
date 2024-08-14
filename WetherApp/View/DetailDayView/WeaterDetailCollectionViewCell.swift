@@ -14,7 +14,7 @@ final class WeaterDetailCollectionViewCell: UICollectionViewCell {
     
     static let id = "WeaterDetailCollectionViewCell"
     
-    let testLabel: UILabel = {
+    private let testLabel: UILabel = {
         let label = UILabel()
         label.text = "날씨"
         label.font = .systemFont(ofSize: 20)
