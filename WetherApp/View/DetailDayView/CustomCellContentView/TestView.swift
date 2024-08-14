@@ -9,10 +9,10 @@ import UIKit
 
 class TestView: UIViewController {
     
-    let feelingTempView = FeelingTempView()
+    let testView = HumidityView()
     
     override func loadView() {
-        view = feelingTempView
+        view = testView
     }
     
 }
