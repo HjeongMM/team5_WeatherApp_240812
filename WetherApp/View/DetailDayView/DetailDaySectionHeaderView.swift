@@ -14,7 +14,7 @@ class DetailDaySectionHeaderView: UICollectionReusableView {
     
     static let id = "DetailDaySectionHeaderView"
     
-    let todayLabel: UILabel = {
+    private let todayLabel: UILabel = {
         let label = UILabel()
         label.text = "2024년 8월 13일"
         label.font = .boldSystemFont(ofSize: 30)

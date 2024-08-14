@@ -55,27 +55,27 @@ class DetailDayViewController: UIViewController {
     private func createWeaterDetailSectionLayout() -> NSCollectionLayoutSection {
         // 아이템 설정
         // 첫 번째 아이템(병합된 셀) 설정
-            let fullWidthItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150))
-            let fullWidthItem = NSCollectionLayoutItem(layoutSize: fullWidthItemSize)
-            
-            // 두 번째 아이템 설정
-            let halfWidthItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-            let halfWidthItem = NSCollectionLayoutItem(layoutSize: halfWidthItemSize)
-
-            // 수평 그룹(두 개의 셀을 나란히 배치) 설정
+        let fullWidthItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150))
+        let fullWidthItem = NSCollectionLayoutItem(layoutSize: fullWidthItemSize)
+        
+        // 두 번째 아이템 설정
+        let halfWidthItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+        let halfWidthItem = NSCollectionLayoutItem(layoutSize: halfWidthItemSize)
+        
+        // 수평 그룹(두 개의 셀을 나란히 배치) 설정
         let halfWidthGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150))
-            let halfWidthGroup = NSCollectionLayoutGroup.horizontal(layoutSize: halfWidthGroupSize, subitem: halfWidthItem, count: 2)
-            halfWidthGroup.interItemSpacing = .fixed(10)
-
-            // 최종 수직 그룹 설정 (병합된 셀 + 두 개의 셀)
-            let finalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(450))
-            let finalGroup = NSCollectionLayoutGroup.vertical(layoutSize: finalGroupSize, subitems: [fullWidthItem, halfWidthGroup])
-            finalGroup.interItemSpacing = .fixed(10)
-
-            // 섹션 설정
-            let section = NSCollectionLayoutSection(group: finalGroup)
-            section.interGroupSpacing = 10
-
+        let halfWidthGroup = NSCollectionLayoutGroup.horizontal(layoutSize: halfWidthGroupSize, subitem: halfWidthItem, count: 2)
+        halfWidthGroup.interItemSpacing = .fixed(10)
+        
+        // 최종 수직 그룹 설정 (병합된 셀 + 두 개의 셀)
+        let finalGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(450))
+        let finalGroup = NSCollectionLayoutGroup.vertical(layoutSize: finalGroupSize, subitems: [fullWidthItem, halfWidthGroup])
+        finalGroup.interItemSpacing = .fixed(10)
+        
+        // 섹션 설정
+        let section = NSCollectionLayoutSection(group: finalGroup)
+        section.interGroupSpacing = 10
+        
         // 헤더 추가
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(30))
         let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -84,7 +84,6 @@ class DetailDayViewController: UIViewController {
             alignment: .top
         )
         section.boundarySupplementaryItems = [header]
-        
         return section
     }
     
