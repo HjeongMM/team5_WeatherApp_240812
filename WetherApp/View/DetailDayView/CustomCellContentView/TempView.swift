@@ -53,7 +53,7 @@ class TempView: UIView {
         return imageView
     }()
     
-    // MARK: - LifeSycle
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
