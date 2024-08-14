@@ -9,7 +9,7 @@ import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager() // 싱글톤 패턴 인스턴스를 생성
-    private let apiKey = "3d1be1b2d3419223212333eb2388ba4a" // API 키를 저장합니다.
+    private let apiKey = "1ad11a058dd751ada3c5aa999ddc64a8" // API 키를 저장합니다.
     private let baseUrl = "https://api.openweathermap.org/data/2.5" // API의 기본 URL을 저장합니다.
 
     private init() {} // 외부에서 인스턴스를 생성하지 못하도록 private 생성자를 만듭니다.
