@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-class ListCollectionViewCell: UICollectionViewCell {
+final class ListCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI Elements
     
-    let blueSquareView: UIView = {
+    private let blueSquareView: UIView = {
         let view = UIView()
         view.backgroundColor = .blue
         return view
@@ -36,8 +36,7 @@ class ListCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(blueSquareView)
         
         blueSquareView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(0) 
+            $0.edges.equalToSuperview().inset(0)
         }
     }
 }
-

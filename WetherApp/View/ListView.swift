@@ -10,6 +10,10 @@ import SnapKit
 
 class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    // MARK: - Static Properties
+    
+    private static let cellIdentifier = "WeatherCell"
+    
     // MARK: - UI Elements
     
     let locationSearchLabel: UILabel = {
@@ -80,7 +84,7 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     private func setupCollectionView() {
         weatherCollectionView.dataSource = self
         weatherCollectionView.delegate = self
-        weatherCollectionView.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: "WeatherCell")
+        weatherCollectionView.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: ListView.cellIdentifier)
     }
     
     // MARK: - Layout Methods
@@ -102,10 +106,13 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! ListCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListView.cellIdentifier, for: indexPath) as? ListCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         return cell
     }
 }
+
 // 미리보기
 import SwiftUI
 
