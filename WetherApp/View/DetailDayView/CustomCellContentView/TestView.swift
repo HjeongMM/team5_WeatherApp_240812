@@ -9,7 +9,7 @@ import UIKit
 
 class TestView: UIViewController {
     
-    let testView = HumidityView()
+    let testView = WeatherMessageView()
     
     override func loadView() {
         view = testView
