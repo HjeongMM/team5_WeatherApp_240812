@@ -7,17 +7,11 @@
 
 import UIKit
 
-class ListViewController: UIViewController {
+final class ListViewController: UIViewController {
+    let listView = ListView()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let listView = ListView()
-        view.addSubview(listView)
-        
-        listView.snp.makeConstraints {
-            $0.edges.equalTo(view)
-        }
+    override func loadView() {
+        view = listView
     }
 }
 
