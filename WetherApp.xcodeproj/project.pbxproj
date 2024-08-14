@@ -16,6 +16,7 @@
 		45EBC6972C6CB6CE006C107E /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBC6962C6CB6CE006C107E /* TestView.swift */; };
 		45EBC6992C6CC2F9006C107E /* FeelingTempView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBC6982C6CC2F9006C107E /* FeelingTempView.swift */; };
 		45EBC69B2C6CE19B006C107E /* HumidityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBC69A2C6CE19A006C107E /* HumidityView.swift */; };
+		45EBC69F2C6CE963006C107E /* WeatherMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EBC69E2C6CE963006C107E /* WeatherMessageView.swift */; };
 		C29F6DA42C6A35AA0081FA15 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29F6DA32C6A35AA0081FA15 /* ListViewController.swift */; };
 		C29F6DA62C6A35B50081FA15 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29F6DA52C6A35B50081FA15 /* ListView.swift */; };
 		C29FCE662C6C3B1200F8951D /* ListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C29FCE652C6C3B1200F8951D /* ListCollectionViewCell.swift */; };
@@ -41,6 +42,7 @@
 		45EBC6962C6CB6CE006C107E /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		45EBC6982C6CC2F9006C107E /* FeelingTempView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeelingTempView.swift; sourceTree = "<group>"; };
 		45EBC69A2C6CE19A006C107E /* HumidityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HumidityView.swift; sourceTree = "<group>"; };
+		45EBC69E2C6CE963006C107E /* WeatherMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMessageView.swift; sourceTree = "<group>"; };
 		C29F6DA32C6A35AA0081FA15 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		C29F6DA52C6A35B50081FA15 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
 		C29FCE652C6C3B1200F8951D /* ListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				45EBC6942C6C8572006C107E /* TempView.swift */,
 				45EBC6982C6CC2F9006C107E /* FeelingTempView.swift */,
 				45EBC69A2C6CE19A006C107E /* HumidityView.swift */,
+				45EBC69E2C6CE963006C107E /* WeatherMessageView.swift */,
 			);
 			path = CustomCellContentView;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				E5ACDC362C69E1A700BB9484 /* AppDelegate.swift in Sources */,
 				45EBC69B2C6CE19B006C107E /* HumidityView.swift in Sources */,
 				DA06DFB92C6B80D200C7265F /* CurrentWeatherResult.swift in Sources */,
+				45EBC69F2C6CE963006C107E /* WeatherMessageView.swift in Sources */,
 				E5ACDC572C6A354200BB9484 /* empty2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
