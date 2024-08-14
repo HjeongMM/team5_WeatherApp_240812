@@ -117,7 +117,7 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
         }
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailDaySectionHeaderView.id, for: indexPath) as! DetailDaySectionHeaderView
         
-        headerView.configure(wiht: "2024년 08월 13일")
+        headerView.configure(with: "2024년 08월 13일")
         return headerView
     }
     

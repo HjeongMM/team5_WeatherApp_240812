@@ -44,7 +44,7 @@ class DetailDaySectionHeaderView: UICollectionReusableView {
         }
     }
     
-    func configure(wiht text: String) {
+    func configure(with text: String) {
         todayLabel.text = text
     }
 }
