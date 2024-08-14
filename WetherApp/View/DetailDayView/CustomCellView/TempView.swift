@@ -6,7 +6,7 @@
 //
 
 
-// 상세날씨 페이지에 CollectionViewCell 에 들어갈 contentView
+// 상세날씨 페이지 CollectionViewCell 에 들어갈 '기온'contentView
 
 import UIKit
 import SnapKit
@@ -15,15 +15,8 @@ class TempView: UIView {
     
     // MARK: - Property
     
-    let minwooView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .red
-        view.layer.cornerRadius = 15
-        return view
-    }()
-    
     // 최고 기온
-    private let tempMAX: UILabel = {
+    private let tempMaxLabel: UILabel = {
         let label = UILabel()
         label.text = "최고: 88°C"
         label.font = .systemFont(ofSize: 25)
@@ -33,7 +26,7 @@ class TempView: UIView {
     }()
     
     // 최저 기온
-    private let tempMin: UILabel = {
+    private let tempMinLabel: UILabel = {
         let label = UILabel()
         label.text = "최저: 20°C"
         label.font = .systemFont(ofSize: 25)
@@ -74,18 +67,17 @@ class TempView: UIView {
     // MARK: - Method
     
     private func setupUI() {
-        self.backgroundColor = .white
-        self.addSubview(minwooView)
+        self.backgroundColor = .clear
         
-        [tempMAX, tempMin].forEach { stackView.addArrangedSubview($0) }
+        [tempMaxLabel, tempMinLabel].forEach { stackView.addArrangedSubview($0) }
         
-        tempMAX.snp.makeConstraints {
+        tempMaxLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(25)
             $0.centerX.equalToSuperview()
         }
         
-        tempMin.snp.makeConstraints {
-            $0.top.equalTo(tempMAX.snp.bottom).offset(5)
+        tempMinLabel.snp.makeConstraints {
+            $0.top.equalTo(tempMaxLabel.snp.bottom).offset(5)
             $0.centerX.equalToSuperview()
         }
         
