@@ -81,7 +81,7 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     private func setupCollectionView() {
         weatherCollectionView.dataSource = self
         weatherCollectionView.delegate = self
-        weatherCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "WeatherCell")
+        weatherCollectionView.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: "WeatherCell")
     }
     
     // MARK: - Layout Methods
@@ -103,13 +103,11 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath)
-        cell.backgroundColor = .blue
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeatherCell", for: indexPath) as! ListCollectionViewCell
         return cell
     }
 }
-
-
+// 미리보기
 import SwiftUI
 
 struct ListViewRepresentable: UIViewRepresentable {
