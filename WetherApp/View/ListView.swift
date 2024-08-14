@@ -53,10 +53,9 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     // MARK: - Setup Methods
     
     private func setupView() {
-        addSubview(locationSearchLabel)
-        addSubview(searchBar)
-        addSubview(weatherCollectionView)
-        
+        [locationSearchLabel, searchBar, weatherCollectionView].forEach {
+            addSubview($0)
+        }
         locationSearchLabel.snp.makeConstraints {
             $0.left.equalTo(safeAreaLayoutGuide.snp.left).offset(16)
             $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(12)
