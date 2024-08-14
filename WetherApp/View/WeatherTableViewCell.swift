@@ -38,22 +38,22 @@ class WeatherTableViewCell: UITableViewCell {
         contentView.addSubview(weatherIcon)
         contentView.addSubview(tempLabel)
         
-        dayLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.centerY.equalToSuperview()
-            make.width.equalTo(60)
+        dayLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(16)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(60)
         }
         
-        weatherIcon.snp.makeConstraints { make in
-            make.leading.equalTo(dayLabel.snp.trailing).offset(16)
-            make.centerY.equalToSuperview()
-            make.size.equalTo(CGSize(width: 30, height: 30))
+        weatherIcon.snp.makeConstraints {
+            $0.leading.equalTo(dayLabel.snp.trailing).offset(16)
+            $0.centerY.equalToSuperview()
+            $0.size.equalTo(CGSize(width: 30, height: 30))
         }
         
-        tempLabel.snp.makeConstraints { make in
-            make.leading.equalTo(weatherIcon.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().inset(16)
-            make.centerY.equalToSuperview()
+        tempLabel.snp.makeConstraints {
+            $0.leading.equalTo(weatherIcon.snp.trailing).offset(16)
+            $0.trailing.equalToSuperview().inset(16)
+            $0.centerY.equalToSuperview()
         }
     }
     
