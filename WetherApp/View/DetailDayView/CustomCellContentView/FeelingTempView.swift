@@ -47,7 +47,7 @@ class FeelingTempView: UIView {
     // MARK: - Method
     
     private func setupUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
  
         [titleLabel, feelingTempLabel].forEach { self.addSubview($0) }
         

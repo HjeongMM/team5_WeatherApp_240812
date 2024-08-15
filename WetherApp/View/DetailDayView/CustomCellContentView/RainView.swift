@@ -56,20 +56,22 @@ class RainView: UIView {
     // MARK: - Method
     
     private func setupUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
         
         [rainLabel, popLabel].forEach { stackView.addArrangedSubview($0) }
         
         rainLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(27)
+            $0.top.equalToSuperview().offset(30)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().offset(10)
+            $0.height.equalTo(20)
         }
         
         popLabel.snp.makeConstraints {
             $0.top.equalTo(rainLabel.snp.bottom).offset(5)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().offset(10)
+            $0.height.equalTo(20)
         }
         
         self.addSubview(stackView)

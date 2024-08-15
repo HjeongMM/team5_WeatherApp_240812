@@ -74,11 +74,13 @@ class TempView: UIView {
         tempMaxLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(25)
             $0.centerX.equalToSuperview()
+            $0.height.equalTo(25)
         }
         
         tempMinLabel.snp.makeConstraints {
             $0.top.equalTo(tempMaxLabel.snp.bottom).offset(5)
             $0.centerX.equalToSuperview()
+            $0.height.equalTo(25)
         }
         
         [stackView, iconImageView].forEach { self.addSubview($0) }

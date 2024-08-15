@@ -105,6 +105,7 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeaterDetailCollectionViewCell.id, for: indexPath) as! WeaterDetailCollectionViewCell
+            cell.configure(for: indexPath.item)
             return cell
         default:
             return UICollectionViewCell()

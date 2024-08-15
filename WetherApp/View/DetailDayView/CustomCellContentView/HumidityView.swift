@@ -47,7 +47,7 @@ class HumidityView: UIView {
     // MARK: - Method
     
     private func setupUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
         
         [titleLabel, humidityLabel].forEach { self.addSubview($0) }
         

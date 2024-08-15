@@ -37,7 +37,7 @@ class WeatherMessageView: UIView {
     // MARK: - Method
     
     private func setupUI() {
-        self.backgroundColor = .white
+        self.backgroundColor = .clear
         self.addSubview(WeatherMassageLabel)
         
         WeatherMassageLabel.snp.makeConstraints {
