@@ -1,5 +1,5 @@
 //
-//  RainView.swift
+//  WindView.swift
 //  WetherApp
 //
 //  Created by 유민우 on 8/15/24.
@@ -9,31 +9,31 @@
 import UIKit
 import SnapKit
 
-class RainView: UIView {
+class WindView: UIView {
     
     // MARK: - Property
-    
-    // 강수량
-    private let rainLabel: UILabel = {
+
+    // 풍속
+    private let speedLabel: UILabel = {
         let label = UILabel()
-        label.text = "강수량: 1mm"
+        label.text = "풍속: 0.2m/s"
         label.font = .boldSystemFont(ofSize: 20)
         label.textColor = .black
         label.textAlignment = .left
         return label
     }()
     
-    // 강수확률
-    private let popLabel: UILabel = {
+    // 풍향
+    private let degLabel: UILabel = {
         let label = UILabel()
-        label.text = "강수확률: 0.07%"
+        label.text = "풍향: 동남풍"
         label.font = .boldSystemFont(ofSize: 20)
         label.textColor = .black
         label.textAlignment = .left
         return label
     }()
     
-    // 강수량, 강수확률이 들어갈 스택뷰
+    // 풍속, 풍향이 들어갈 스택뷰
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 0
@@ -57,17 +57,17 @@ class RainView: UIView {
     
     private func setupUI() {
         self.backgroundColor = .white
+
+        [speedLabel, degLabel].forEach { stackView.addArrangedSubview($0) }
         
-        [rainLabel, popLabel].forEach { stackView.addArrangedSubview($0) }
-        
-        rainLabel.snp.makeConstraints {
+        speedLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(27)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().offset(10)
         }
         
-        popLabel.snp.makeConstraints {
-            $0.top.equalTo(rainLabel.snp.bottom).offset(5)
+        degLabel.snp.makeConstraints {
+            $0.top.equalTo(speedLabel.snp.bottom).offset(5)
             $0.centerX.equalToSuperview()
             $0.leading.equalToSuperview().offset(10)
         }
