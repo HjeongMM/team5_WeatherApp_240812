@@ -16,6 +16,7 @@ class NetworkManager {
     // 자원의 낭비? api 하나 하는 것이 좋을지 두개 쓰는 것이 좋을지
     // 공통 네트워크 요청 메서드
     private func fetchData<T: Decodable>(url: URL, completion: @escaping (T?) -> Void) {
+
         let session = URLSession(configuration: .default) // 기본 설정으로 URLSession 인스턴스를 생성합니다.
         session.dataTask(with: URLRequest(url: url)) { data, response, error in
             guard let data = data, error == nil else {
@@ -39,7 +40,7 @@ class NetworkManager {
         }.resume() // 요청 시작
     }
 
-    // 서버에서 현재 날씨 데이터를 불러오는 메서드
+    // 서버에서 현재 날씨 데이터를 불러오는 메서드  //하루기준 찾아보기
     func fetchCurrentWeatherData(lat: Double, lon: Double, completion: @escaping (CurrentWeatherResult?, UIImage?) -> Void) {
         // URLComponents를 사용하여 URL을 구성합니다.
         var urlComponents = URLComponents(string: "\(baseUrl)/weather")
