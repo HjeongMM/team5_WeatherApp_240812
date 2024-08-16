@@ -14,7 +14,6 @@ struct CurrentWeatherResult: Codable {
     let main: WeatherMain // 주요 날씨 정보 (온도, 습도 등)
     let wind: Wind // 바람 정보 추가
     let rain: Rain? // 강수량 정보 추가 (비가 오지 않으면 없음)
-    let snow: Snow? // 적설량 정보 추가 (눈이 오지 않으면 없음)
 }
 
 struct Weather: Codable {
@@ -48,16 +47,6 @@ struct Rain: Codable {
     }
 }
 
-struct Snow: Codable {
-    let oneHour: Double? // 지난 1시간 동안의 적설량 (옵셔널)
-    let threeHour: Double? // 지난 3시간 동안의 적설량 (옵셔널)
-
-    enum CodingKeys: String, CodingKey {
-        case oneHour = "1h"
-        case threeHour = "3h"
-    }
-}
-
 struct ForecastWeatherResult: Codable {
     let list: [ForecastWeather] // 날씨 예보 리스트
 }
@@ -66,7 +55,6 @@ struct ForecastWeather: Codable {
     let main: WeatherMain // 주요 날씨 정보 (온도, 습도 등)
     let wind: Wind // 바람 정보 추가
     let rain: Rain? // 강수량 정보 추가
-    let snow: Snow? // 적설량 정보 추가
     let dtTxt: String // 날짜와 시간 정보
     //여기에 계산 함수 추가
 
