@@ -93,6 +93,7 @@ class WeatherViewController: UIViewController {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupLayout()
         collectionView.dataSource = self
         tableView.dataSource = self
