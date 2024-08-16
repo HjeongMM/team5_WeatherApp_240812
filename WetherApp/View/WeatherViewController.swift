@@ -9,24 +9,24 @@ import UIKit
 import SnapKit
 
 class WeatherViewController: UIViewController {
-
-//     MARK: - UI Components
     
-    let firstbutton: UIButton = {
+    //     MARK: - UI Components
+    
+    lazy var firstbutton: UIButton = {
         let firstbutton = UIButton(type: .system)
         firstbutton.setTitle("back", for: .normal)
         firstbutton.setTitleColor(.black, for: .normal)
         firstbutton.translatesAutoresizingMaskIntoConstraints = false
-      firstbutton.addTarget(self, action: #selector(Firstinput), for: .touchDown)
+        firstbutton.addTarget(self, action: #selector(Firstinput), for: .touchDown)
         return firstbutton
     }()
     
-    let Secondbutton: UIButton = {
+    lazy var Secondbutton: UIButton = {
         let Secondbutton = UIButton(type: .system)
         Secondbutton.setTitle("추가", for: .normal)
         Secondbutton.setTitleColor(.black, for: .normal)
         Secondbutton.translatesAutoresizingMaskIntoConstraints = false
-      Secondbutton.addTarget(self, action: #selector(Secondinput), for: .touchDown)
+        Secondbutton.addTarget(self, action: #selector(Secondinput), for: .touchDown)
         return Secondbutton
     }()
     
@@ -77,7 +77,7 @@ class WeatherViewController: UIViewController {
         
         weatherIcon.snp.makeConstraints {
             $0.top.centerX.equalToSuperview()
-//            $0.bottom.equalTo(0)
+            //            $0.bottom.equalTo(0)
             $0.size.equalTo(CGSize(width: 50, height: 50))
         }
         
