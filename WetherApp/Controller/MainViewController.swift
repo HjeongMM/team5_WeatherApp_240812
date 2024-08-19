@@ -13,7 +13,7 @@ class MainViewController: UIViewController {
     private let mainView = MainView()
     private var currentLocation: CLLocation?
     private let locationManager = LocationManager.shared
-    private let weatherDataManager = WeatherDataManager()
+    private let weatherDataManager = WeatherDataManager.shared
     private var currentWeather: CurrentWeatherResult?
     private var forecastData: [ForecastWeather] = []
     
@@ -109,7 +109,9 @@ extension MainViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ThreeHourlyCollectionViewCell", for: indexPath) as! ThreeHourlyCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ThreeHourlyCollectionViewCell", for: indexPath) as? ThreeHourlyCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         let threeHourlyForecasts = WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData)
         let forecast = threeHourlyForecasts[indexPath.row]
         let iconName = WeatherDataFormatter.shared.iconWeatherCondition(forecast.weather.first?.main ?? "")
@@ -124,7 +126,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as! WeatherTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell else {
+            return UITableViewCell()
+        }
         let dailyForecasts = WeatherDataFormatter.shared.filterForecastData(forecastData)
         let forecast = dailyForecasts[indexPath.row]
         
@@ -176,5 +180,3 @@ extension MainViewController: LocationManagerDelegate {
         present(alert, animated: true)
     }
 }
-
-//api.openweathermap.org/data/2.5/forecast?lat=37.5665&lon=126.9780&appid=1ad11a058dd751ada3c5aa999ddc64a8
