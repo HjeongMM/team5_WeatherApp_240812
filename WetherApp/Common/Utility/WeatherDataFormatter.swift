@@ -116,22 +116,21 @@ class WeatherDataFormatter {
     func iconWeatherCondition(_ condition: String) -> String {
         switch condition {
         case "Clear":
-            return "sun.max"
+            return "sun.max" // 맑음
         case "Clouds", "Cloudy":
-            return "cloud"
-//        case "Rain":
-//            return "비"
-//        case "Snow":
-//            return "눈"
-//        case "Thunderstorm":
-//            return "천둥번개"
-//        case "Drizzle":
-//            return "이슬비"
-//        case "Mist", "Fog":
-//            return "안개"
+            return "cloud" // 구름
+        case "Rain":
+            return "cloud.rain" // 비
+        case "Snow":
+            return "snow" // 눈
+        case "Thunderstorm":
+            return "cloud.bolt" // 천둥번개
+        case "Drizzle":
+            return "cloud.drizzle" // 이슬비
+        case "Mist", "Fog":
+            return "cloud.fog" // 안개
         default:
-            return "moon"
+            return "moon" // 기본값 (밤)
         }
     }
-    
 }
