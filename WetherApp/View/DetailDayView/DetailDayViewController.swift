@@ -12,11 +12,14 @@ class DetailDayViewController: UIViewController {
     
     // MARK: - Property
     
+    private var weatherData: CurrentWeatherResult?
+    private var weatherIcon: UIImage?
+    
     lazy var detailDayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(WeaterDetailCollectionViewCell.self, forCellWithReuseIdentifier: WeaterDetailCollectionViewCell.id)
+        collectionView.register(WeatherDetailCollectionViewCell.self, forCellWithReuseIdentifier: WeatherDetailCollectionViewCell.id)
         collectionView.register(DetailDaySectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DetailDaySectionHeaderView.id)
         collectionView.backgroundColor = .clear
         return collectionView
@@ -29,12 +32,23 @@ class DetailDayViewController: UIViewController {
     
     //MARK: - Method
     
+//    private func fetchWeatherData() {
+//        let lat = 37.5665
+//        let lon = 126.9780
+//        
+//        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon) { [weak self] result in
+//            switch result {
+//            case .
+//            }
+//        }
+//    }
+    
     private func setupUI() {
         view.backgroundColor = .white
         view.addSubview(detailDayCollectionView)
         
         detailDayCollectionView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(60)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             $0.leading.equalToSuperview().offset(5)
             $0.trailing.equalToSuperview().offset(-5)
             $0.bottom.equalToSuperview().offset(-15)
@@ -43,12 +57,7 @@ class DetailDayViewController: UIViewController {
     
     private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
-            switch sectionIndex {
-            case 0:
-                return self.createWeaterDetailSectionLayout()
-            default:
-                return nil
-            }
+            return self.createWeaterDetailSectionLayout()
         }
     }
     
@@ -93,22 +102,16 @@ class DetailDayViewController: UIViewController {
 
 extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
             return 6
-        default:
-            return 0
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeaterDetailCollectionViewCell.id, for: indexPath) as! WeaterDetailCollectionViewCell
-            return cell
-        default:
-            return UICollectionViewCell()
+        guard let weatherData = weatherData, let weatherIcon = weatherIcon else {
+            return WeatherDetailCollectionViewCell()
         }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDetailCollectionViewCell.id, for: indexPath) as! WeatherDetailCollectionViewCell
+        cell.configure(for: indexPath.item, with: weatherData, image: weatherIcon)
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -122,7 +125,7 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 1
     }
         
 }
