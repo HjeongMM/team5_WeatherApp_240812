@@ -108,5 +108,4 @@ class ThreeHourlyCollectionViewCell: UICollectionViewCell {
         threeHourWeatherIcon.image = UIImage(systemName: iconName)
         threeHourTempLabel.text = String(format: "%.0f°C", forecast.main.temp)
     }
-    
 }
