@@ -8,12 +8,11 @@
 import UIKit
 import SnapKit
 
-final class WeaterDetailCollectionViewCell: UICollectionViewCell {
+final class WeatherDetailCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Property
     
     static let id = "WeaterDetailCollectionViewCell"
-    private var customView: UIView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,7 +52,7 @@ final class WeaterDetailCollectionViewCell: UICollectionViewCell {
             contentView.addSubview(humidityView)
             humidityView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
-            }
+            } 
         case 3:
             let weatherMessageView = WeatherMessageView()
             // 습도에 따라 상태메세지가 다르게 출력되는 메서드 만들것!
@@ -81,3 +80,5 @@ final class WeaterDetailCollectionViewCell: UICollectionViewCell {
     }
     
 }
+
+// git test
