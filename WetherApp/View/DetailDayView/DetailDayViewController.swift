@@ -32,16 +32,16 @@ class DetailDayViewController: UIViewController {
     
     //MARK: - Method
     
-    private func fetchWeatherData() {
-        let lat = 37.5665
-        let lon = 126.9780
-        
-        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon) { [weak self] result in
-            switch result {
-            case .
-            }
-        }
-    }
+//    private func fetchWeatherData() {
+//        let lat = 37.5665
+//        let lon = 126.9780
+//        
+//        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon) { [weak self] result in
+//            switch result {
+//            case .
+//            }
+//        }
+//    }
     
     private func setupUI() {
         view.backgroundColor = .white
