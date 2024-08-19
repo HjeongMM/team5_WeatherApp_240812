@@ -12,7 +12,7 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     
     // MARK: - Static Properties
     
-    private static let cellIdentifier = "WeatherCell"
+    static let cellIdentifier = "WeatherCell"
     
     // MARK: - UI Elements
     
@@ -21,6 +21,7 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
         label.text = "위치 검색"
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 24)
+        label.textColor = .mainGreen // 텍스트 색상을 mainGreen으로 설정
         return label
     }()
     
@@ -28,15 +29,37 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
         let searchBar = UISearchBar()
         searchBar.placeholder = "도시 또는 공항 검색"
         searchBar.backgroundImage = UIImage()
+        searchBar.tintColor = .mainGreen // 서치바의 커서와 버튼 색상을 mainGreen으로 설정
+        searchBar.searchTextField.textColor = .mainGreen // 서치바 텍스트 색상 mainGreen으로 설정
+        searchBar.searchTextField.layer.borderColor = UIColor.mainGreen.cgColor // 서치바 테두리 색상을 mainGreen으로 설정
+        searchBar.searchTextField.layer.borderWidth = 1.0 // 서치바 테두리 두께 설정
+        searchBar.searchTextField.layer.cornerRadius = 10 // 서치바 테두리의 둥글기 설정
+        searchBar.searchTextField.clipsToBounds = true
+
+        // 플레이스홀더 텍스트 색상을 mainGreen으로 설정
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.mainGreen
+        ]
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "도시 또는 공항 검색", attributes: placeholderAttributes)
+
+        // 돋보기 아이콘 색상 변경
+        if let glassIconView = searchBar.searchTextField.leftView as? UIImageView {
+            glassIconView.image = glassIconView.image?.withRenderingMode(.alwaysTemplate)
+            glassIconView.tintColor = .mainGreen
+        }
+
         return searchBar
     }()
+
+
+
     
     let weatherCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         
         let weatherCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        weatherCollectionView.backgroundColor = .white
+        weatherCollectionView.backgroundColor = .mainDarkGray // 컬렉션 뷰의 배경색을 mainDarkGray로 설정
         return weatherCollectionView
     }()
     
@@ -44,12 +67,14 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .mainDarkGray // 뷰의 배경색을 mainDarkGray로 설정
         setupView()
         setupCollectionView()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        backgroundColor = .mainDarkGray // 뷰의 배경색을 mainDarkGray로 설정
         setupView()
         setupCollectionView()
     }
@@ -110,27 +135,5 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
             return UICollectionViewCell()
         }
         return cell
-    }
-}
-
-// 미리보기
-import SwiftUI
-
-struct ListViewRepresentable: UIViewRepresentable {
-    
-    func makeUIView(context: Context) -> UIView {
-        return ListView()
-    }
-    
-    func updateUIView(_ uiView: UIView, context: Context) {
-    }
-}
-
-struct ListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListViewRepresentable()
-            .edgesIgnoringSafeArea(.all)
-            .previewDevice("iPhone 14")
-            .previewDisplayName("iPhone 14 - iOS 16")
     }
 }
