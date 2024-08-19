@@ -62,7 +62,6 @@ struct ForecastWeather: Codable {
         case main // JSON 키와 구조체 키의 매핑
         case wind
         case rain
-        case snow
         case dtTxt = "dt_txt" // JSON에서 "dt_txt" 키를 "dtTxt" 변수와 매핑
     }
 }

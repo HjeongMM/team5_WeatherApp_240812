@@ -13,6 +13,16 @@ class RainView: UIView {
     
     // MARK: - Property
     
+    // 타이틀
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "강수량"
+        label.font = .systemFont(ofSize: 18)
+        label.textColor = .black
+        label.textAlignment = .center
+        return label
+    }()
+    
     // 강수량
     private let rainLabel: UILabel = {
         let label = UILabel()
@@ -21,25 +31,6 @@ class RainView: UIView {
         label.textColor = .black
         label.textAlignment = .left
         return label
-    }()
-    
-    // 강수확률
-    private let popLabel: UILabel = {
-        let label = UILabel()
-        label.text = "강수확률: 0.07%"
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .black
-        label.textAlignment = .left
-        return label
-    }()
-    
-    // 강수량, 강수확률이 들어갈 스택뷰
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.spacing = 0
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        return stackView
     }()
     
     // MARK: - Initializers
@@ -57,27 +48,24 @@ class RainView: UIView {
     
     private func setupUI() {
         self.backgroundColor = .clear
+    
+        [titleLabel, rainLabel].forEach { self.addSubview($0) }
         
-        [rainLabel, popLabel].forEach { stackView.addArrangedSubview($0) }
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(5)
+            $0.centerX.equalToSuperview()
+            $0.height.equalTo(20)
+        }
         
         rainLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(30)
-            $0.centerX.equalToSuperview()
-            $0.leading.equalToSuperview().offset(10)
-            $0.height.equalTo(20)
+            $0.center.equalToSuperview()
+            $0.height.equalTo(40)
         }
-        
-        popLabel.snp.makeConstraints {
-            $0.top.equalTo(rainLabel.snp.bottom).offset(5)
-            $0.centerX.equalToSuperview()
-            $0.leading.equalToSuperview().offset(10)
-            $0.height.equalTo(20)
-        }
-        
-        self.addSubview(stackView)
-        
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
+ 
     }
+    
+    func configure(with text: String) {
+        rainLabel.text = text
+    }
+    
 }

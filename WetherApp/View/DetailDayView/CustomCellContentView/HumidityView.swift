@@ -62,4 +62,9 @@ class HumidityView: UIView {
             $0.height.equalTo(40)
         }
     }
+    
+    func configure(with text: String) {
+        humidityLabel.text = text
+    }
+    
 }

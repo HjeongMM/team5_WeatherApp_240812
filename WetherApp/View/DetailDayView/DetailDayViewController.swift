@@ -12,6 +12,9 @@ class DetailDayViewController: UIViewController {
     
     // MARK: - Property
     
+    private var weatherData: CurrentWeatherResult?
+    private var weatherIcon: UIImage?
+    
     lazy var detailDayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.delegate = self
@@ -25,6 +28,7 @@ class DetailDayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        loadData()
     }
     
     //MARK: - Method
@@ -34,7 +38,7 @@ class DetailDayViewController: UIViewController {
         view.addSubview(detailDayCollectionView)
         
         detailDayCollectionView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(60)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             $0.leading.equalToSuperview().offset(5)
             $0.trailing.equalToSuperview().offset(-5)
             $0.bottom.equalToSuperview().offset(-15)
@@ -43,12 +47,7 @@ class DetailDayViewController: UIViewController {
     
     private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, environment) -> NSCollectionLayoutSection? in
-            switch sectionIndex {
-            case 0:
-                return self.createWeaterDetailSectionLayout()
-            default:
-                return nil
-            }
+            return self.createWeaterDetailSectionLayout()
         }
     }
     
@@ -87,29 +86,35 @@ class DetailDayViewController: UIViewController {
         return section
     }
     
+    // 네트워크 매니저에서 데이터를 받아오는 메서드
+    private func loadData() {
+        NetworkManager.shared.fetchCurrentWeatherData(lat: 37.5168, lon: 126.8665) { [weak self] result, image in
+            guard let self = self, let weatherData = result else { return }
+            
+            self.weatherData = weatherData  // 데이터를 weatherData 에 저장
+            self.weatherIcon = image        // 이미지를 weatherIcon 에 저장
+            DispatchQueue.main.async {
+                self.detailDayCollectionView.reloadData()
+            }
+        }
+    }
+    
 }
 
 // MARK: - Extension
 
 extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
             return 6
-        default:
-            return 0
-        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeaterDetailCollectionViewCell.id, for: indexPath) as! WeaterDetailCollectionViewCell
-            cell.configure(for: indexPath.item)
-            return cell
-        default:
-            return UICollectionViewCell()
+        guard let weatherData = weatherData, let weatherIcon = weatherIcon else {
+            return WeatherCollectionViewCell()
         }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeaterDetailCollectionViewCell.id, for: indexPath) as! WeaterDetailCollectionViewCell
+        cell.configure(for: indexPath.item, with: weatherData, image: weatherIcon)
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -123,7 +128,7 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 1
     }
         
 }

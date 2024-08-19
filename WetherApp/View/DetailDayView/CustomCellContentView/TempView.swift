@@ -18,7 +18,6 @@ class TempView: UIView {
     // 최고 기온
     private let tempMaxLabel: UILabel = {
         let label = UILabel()
-        label.text = "최고: 88°C"
         label.font = .systemFont(ofSize: 25)
         label.textColor = .black
         label.textAlignment = .center
@@ -98,5 +97,10 @@ class TempView: UIView {
             $0.bottom.equalToSuperview().offset(-10)
             $0.width.equalTo(160)
         }
+    }
+    func configure(with text: String, image: UIImage?) {
+        tempMaxLabel.text = text
+        tempMinLabel.text = text
+        iconImageView.image = image
     }
 }

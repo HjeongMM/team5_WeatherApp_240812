@@ -80,4 +80,10 @@ class WindView: UIView {
             $0.edges.equalToSuperview()
         }
     }
+    
+    func configure(with text: String) {
+        speedLabel.text = text
+        degLabel.text = text
+    }
+    
 }

@@ -62,4 +62,10 @@ class FeelingTempView: UIView {
             $0.height.equalTo(40)
         }
     }
+    
+    func configure(with text: String) {
+        feelingTempLabel.text = text
+    }
+    
 }
+
