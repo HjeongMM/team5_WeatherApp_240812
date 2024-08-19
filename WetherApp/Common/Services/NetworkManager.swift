@@ -175,28 +175,7 @@ class NetworkManager {
             }
         }.resume()
     }
-    
-    func fetchWeatherIcon(iconCode: String, completion: @escaping (Result<Data, Error>) -> Void) {
-        guard let url = URL(string: "https://openweathermap.org/img/wn/\(iconCode)@2x.png") else {
-            completion(.failure(NetworkError.invalidURL))
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NetworkError.noData))
-                return
-            }
-            
-            completion(.success(data))
-        }.resume()
-    }
-    
+
     func fetchCurrentWeatherData(lat: Double, lon: Double, completion: @escaping (Result<CurrentWeatherResult, Error>) -> Void) {
         guard let url = createURL(endpoint: .currentWeather, lat: lat, lon: lon) else {
             completion(.failure(NetworkError.invalidURL))
@@ -208,6 +187,17 @@ class NetworkManager {
     
     func fetchForecastData(lat: Double, lon: Double, completion: @escaping (Result<ForecastWeatherResult, Error>) -> Void) {
         guard let url = createURL(endpoint: .forecast, lat: lat, lon: lon, additionalParams: ["cnt": "40"]) else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        fetchData(url: url, completion: completion)
+    }
+    
+    func fetchLocations(for query: String, completion: @escaping (Result<[LocationResult], Error>) -> Void) {
+        let urlString = "https://api.openweathermap.org/geo/1.0/direct?q=\(query)&limit=5&appid=\(apiKey)"
+        
+        guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return
         }
