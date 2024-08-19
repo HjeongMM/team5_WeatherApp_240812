@@ -19,7 +19,7 @@ class DetailDayViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(WeaterDetailCollectionViewCell.self, forCellWithReuseIdentifier: WeaterDetailCollectionViewCell.id)
+        collectionView.register(WeatherDetailCollectionViewCell.self, forCellWithReuseIdentifier: WeatherDetailCollectionViewCell.id)
         collectionView.register(DetailDaySectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DetailDaySectionHeaderView.id)
         collectionView.backgroundColor = .clear
         return collectionView
@@ -28,10 +28,20 @@ class DetailDayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        loadData()
     }
     
     //MARK: - Method
+    
+    private func fetchWeatherData() {
+        let lat = 37.5665
+        let lon = 126.9780
+        
+        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon) { [weak self] result in
+            switch result {
+            case .
+            }
+        }
+    }
     
     private func setupUI() {
         view.backgroundColor = .white
@@ -86,19 +96,6 @@ class DetailDayViewController: UIViewController {
         return section
     }
     
-    // 네트워크 매니저에서 데이터를 받아오는 메서드
-    private func loadData() {
-        NetworkManager.shared.fetchCurrentWeatherData(lat: 37.5168, lon: 126.8665) { [weak self] result, image in
-            guard let self = self, let weatherData = result else { return }
-            
-            self.weatherData = weatherData  // 데이터를 weatherData 에 저장
-            self.weatherIcon = image        // 이미지를 weatherIcon 에 저장
-            DispatchQueue.main.async {
-                self.detailDayCollectionView.reloadData()
-            }
-        }
-    }
-    
 }
 
 // MARK: - Extension
@@ -110,9 +107,9 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let weatherData = weatherData, let weatherIcon = weatherIcon else {
-            return WeatherCollectionViewCell()
+            return WeatherDetailCollectionViewCell()
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeaterDetailCollectionViewCell.id, for: indexPath) as! WeaterDetailCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDetailCollectionViewCell.id, for: indexPath) as! WeatherDetailCollectionViewCell
         cell.configure(for: indexPath.item, with: weatherData, image: weatherIcon)
         return cell
     }
