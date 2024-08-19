@@ -98,6 +98,7 @@ class TempView: UIView {
             $0.width.equalTo(160)
         }
     }
+    
     func configure(with text: String, image: UIImage?) {
         tempMaxLabel.text = text
         tempMinLabel.text = text
