@@ -21,7 +21,7 @@ class TempView: UIView {
     private let tempMaxLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 25)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .center
         return label
     }()
@@ -31,7 +31,7 @@ class TempView: UIView {
         let label = UILabel()
         label.text = "최저: 20°C"
         label.font = .systemFont(ofSize: 25)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .center
         return label
     }()

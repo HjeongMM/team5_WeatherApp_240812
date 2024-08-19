@@ -18,7 +18,7 @@ class WindView: UIView {
         let label = UILabel()
         label.text = "풍속: 0.2m/s"
         label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .left
         return label
     }()
@@ -28,7 +28,7 @@ class WindView: UIView {
         let label = UILabel()
         label.text = "풍향: 동남풍"
         label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .left
         return label
     }()

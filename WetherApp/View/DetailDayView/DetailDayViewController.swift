@@ -51,7 +51,7 @@ class DetailDayViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .mainDarkGray
         view.addSubview(detailDayCollectionView)
         
         detailDayCollectionView.snp.makeConstraints {
