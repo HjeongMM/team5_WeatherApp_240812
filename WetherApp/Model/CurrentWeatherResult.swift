@@ -53,16 +53,13 @@ struct ForecastWeatherResult: Codable {
 
 struct ForecastWeather: Codable {
     let main: WeatherMain // 주요 날씨 정보 (온도, 습도 등)
-    let wind: Wind // 바람 정보 추가
-    let rain: Rain? // 강수량 정보 추가
+    let weather: [Weather]
     let dtTxt: String // 날짜와 시간 정보
     //여기에 계산 함수 추가
 
     enum CodingKeys: String, CodingKey {
         case main // JSON 키와 구조체 키의 매핑
-        case wind
-        case rain
-        case snow
+        case weather
         case dtTxt = "dt_txt" // JSON에서 "dt_txt" 키를 "dtTxt" 변수와 매핑
     }
 }
