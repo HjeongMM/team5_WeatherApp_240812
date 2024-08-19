@@ -9,34 +9,12 @@ import UIKit
 import SnapKit
 
 class MainView: UIView {
-    
-    //     MARK: - UI Components
-    
-    //    lazy var backButton: UIButton = {
-    //        let button = UIButton(type: .system)
-    //        button.setTitle("back", for: .normal)
-    //        button.setTitleColor(.black, for: .normal)
-    //        button.translatesAutoresizingMaskIntoConstraints = false
-    //        button.addTarget(self, action: #selector(WeatherViewController.Firstinput), for: .touchDown)
-    //        return button
-    //    }()
-    //
-    //    lazy var addButton: UIButton = {
-    //        let button = UIButton(type: .system)
-    //        button.setTitle("추가", for: .normal)
-    //        button.setTitleColor(.black, for: .normal)
-    //        button.translatesAutoresizingMaskIntoConstraints = false
-    //        button.addTarget(self, action: #selector(WeatherViewController.Secondinput), for: .touchDown)
-    //        return button
-    //    }()
-    
-    let mainStackView: UIStackView = {
+    private let mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
         stackView.backgroundColor = .clear
-
         return stackView
     }()
     
@@ -76,8 +54,6 @@ class MainView: UIView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
-//        stackView.layer.borderColor = UIColor.mainGreen.cgColor
-//        stackView.layer.borderWidth = 1
         return stackView
     }()
     
@@ -97,7 +73,6 @@ class MainView: UIView {
         layout.minimumLineSpacing = 10
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .mainDarkGray
-        // Register cell class here
         collectionView.register(ThreeHourlyCollectionViewCell.self, forCellWithReuseIdentifier: "ThreeHourlyCollectionViewCell")
         return collectionView
     }()
@@ -105,13 +80,10 @@ class MainView: UIView {
     func addBordersToCollectionView() {
         let backgroundView = UIView(frame: collectionView.bounds)
         backgroundView.backgroundColor = .clear
-        
         let topBorder = UIView(frame: CGRect(x: 0, y: 0, width: backgroundView.frame.width, height: 1))
-        topBorder.backgroundColor = .mainGreen // 원하는 색상으로 변경
-        
+        topBorder.backgroundColor = .mainGreen
         let bottomBorder = UIView(frame: CGRect(x: 0, y: backgroundView.frame.height - 1, width: backgroundView.frame.width, height: 1))
-        bottomBorder.backgroundColor = .mainGreen // 원하는 색상으로 변경
-        
+        bottomBorder.backgroundColor = .mainGreen
         backgroundView.addSubview(topBorder)
         backgroundView.addSubview(bottomBorder)
         collectionView.contentInset = .zero
@@ -130,14 +102,16 @@ class MainView: UIView {
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
+        tableView.isScrollEnabled = false
         tableView.backgroundColor = .clear
         tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: "WeatherTableViewCell")
         return tableView
     }()
     
     
-    // MARK: - Layout Setup
-    private func setupCurrentWeatherLayout() { 
+    // MARK: - Auto Layout
+    
+    private func setupCurrentWeatherLayout() {
         [mainStackView, collectionView, tableView].forEach {
             self.addSubview($0)
         }
@@ -145,22 +119,22 @@ class MainView: UIView {
         mainStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(80)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(350)
+            $0.width.equalTo(340)
             $0.height.equalTo(300)
         }
         
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(mainStackView.snp.bottom).offset(30)
-            $0.centerX.equalToSuperview().offset(4)
-            $0.width.equalTo(350)
-            $0.height.equalTo(130)
+            $0.top.equalTo(mainStackView.snp.bottom).offset(25)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(340)
+            $0.height.equalTo(135)
         }
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(collectionView.snp.bottom).offset(30)
+            $0.top.equalTo(collectionView.snp.bottom).offset(20)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(340)
-            $0.height.equalTo(350)
+            $0.height.equalTo(250)
         }
         
         setupMainStackView()
@@ -170,16 +144,7 @@ class MainView: UIView {
         [locationLabel, weatherIcon, weatherStatusLabel, tempLabel, minMaxStackview].forEach {
             self.addSubview($0)
         }
-        
-        //        backButton.snp.makeConstraints {
-        //            $0.top.equalTo(safeAreaLayoutGuide)
-        //            $0.leading.equalTo(30)
-        //        }
-        //
-        //        addButton.snp.makeConstraints {
-        //            $0.top.equalTo(safeAreaLayoutGuide)
-        //            $0.leading.equalTo(330)
-        //        }
+
         locationLabel.snp.makeConstraints {
             $0.top.equalTo(mainStackView.snp.top).offset(20)
             $0.centerX.equalToSuperview()

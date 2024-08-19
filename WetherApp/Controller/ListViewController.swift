@@ -11,7 +11,7 @@ import CoreLocation
 class ListViewController: UIViewController, UISearchBarDelegate {
     private let listView = ListView()
     private let locationManager = LocationManager.shared
-    private var weatherDataManager = WeatherDataManager()
+    private var weatherDataManager = WeatherDataManager.shared
     private var filteredLocations: [LocationResult] = []
     
     override func loadView() {
