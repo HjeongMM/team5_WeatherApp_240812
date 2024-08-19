@@ -81,9 +81,9 @@ class WindView: UIView {
         }
     }
     
-    func configure(with text: String) {
-        speedLabel.text = text
-        degLabel.text = text
+    func configure(with speedText: String, degText: String) {
+        speedLabel.text = speedText
+        degLabel.text = degText
     }
     
 }

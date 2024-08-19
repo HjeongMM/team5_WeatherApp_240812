@@ -46,4 +46,9 @@ class WeatherMessageView: UIView {
             $0.width.equalTo(300)
         }
     }
+    
+    func configure(with text: String) {
+        WeatherMassageLabel.text = text
+    }
+    
 }

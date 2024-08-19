@@ -19,7 +19,7 @@ class DetailDaySectionHeaderView: UICollectionReusableView {
         label.text = "2024년 8월 13일"
         label.font = .boldSystemFont(ofSize: 30)
         label.textAlignment = .center
-        label.textColor = .black
+        label.textColor = .mainGreen
         return label
     }()
     

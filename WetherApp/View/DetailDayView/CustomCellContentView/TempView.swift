@@ -15,6 +15,8 @@ class TempView: UIView {
     
     // MARK: - Property
     
+    private let view = UIView()
+    
     // 최고 기온
     private let tempMaxLabel: UILabel = {
         let label = UILabel()
@@ -46,9 +48,8 @@ class TempView: UIView {
     // 날씨 아이콘이 들어갈 imageView
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .gray
+        imageView.backgroundColor = .mainDarkGray
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "icon")
         return imageView
     }()
     
@@ -99,9 +100,9 @@ class TempView: UIView {
         }
     }
     
-    func configure(with text: String, image: UIImage?) {
-        tempMaxLabel.text = text
-        tempMinLabel.text = text
+    func configure(with textMax: String, textMin: String, image: UIImage?) {
+        tempMaxLabel.text = textMax
+        tempMinLabel.text = textMin
         iconImageView.image = image
     }
 }
