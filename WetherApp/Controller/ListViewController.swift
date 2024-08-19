@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ListViewController: UIViewController, UISearchBarDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class ListViewController: UIViewController, UISearchBarDelegate {
     let listView = ListView()
     var filteredLocations: [LocationResult] = [] // 자동완성을 위한 지역 목록
     
@@ -66,11 +66,6 @@ class ListViewController: UIViewController, UISearchBarDelegate, UICollectionVie
     }
     
     // 선택한 지역에 대한 날씨 정보를 가져와 모달로 표시
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedLocation = filteredLocations[indexPath.row]
-        fetchWeatherForLocation(location: selectedLocation)
-    }
-    
     func fetchWeatherForLocation(location: LocationResult) {
         NetworkManager.shared.fetchCurrentWeatherData(lat: location.lat, lon: location.lon) { [weak self] result in
             switch result {
@@ -91,15 +86,25 @@ class ListViewController: UIViewController, UISearchBarDelegate, UICollectionVie
         addRegionViewController.modalPresentationStyle = .pageSheet
         present(addRegionViewController, animated: true, completion: nil)
     }
+}
+
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+
+extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    // MARK: - UICollectionViewDelegate, UICollectionViewDataSource
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedLocation = filteredLocations[indexPath.row]
+        fetchWeatherForLocation(location: selectedLocation)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredLocations.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListView.cellIdentifier, for: indexPath) as! ListCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListView.cellIdentifier, for: indexPath) as? ListCollectionViewCell else {
+            return UICollectionViewCell() // 대체 셀 반환
+        }
         let location = filteredLocations[indexPath.row]
         cell.configure(with: "\(location.name), \(location.country)")
         return cell

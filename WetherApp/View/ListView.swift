@@ -51,9 +51,6 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
         return searchBar
     }()
 
-
-
-    
     let weatherCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10

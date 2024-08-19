@@ -10,7 +10,7 @@ import SnapKit
 
 class AddRegionView: UIView {
 
-    // UI Components
+    // UI 컴포넌트
     private let locationLabel: UILabel = {
         let label = UILabel()
         label.text = "(검색된) 위치"
@@ -51,7 +51,7 @@ class AddRegionView: UIView {
         return label
     }()
     
-    // Initialize View
+    // View 초기화
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViewLayout()
@@ -62,40 +62,39 @@ class AddRegionView: UIView {
     }
     
     private func setupViewLayout() {
-        addSubview(locationLabel)
-        addSubview(weatherIcon)
-        addSubview(weatherStatusLabel)
-        addSubview(currentTempLabel)
-        addSubview(minMaxTempLabel)
-        
-        locationLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(40)  // 화면 맨 위에 위치
-            make.centerX.equalToSuperview()
+       
+        [locationLabel, weatherIcon, weatherStatusLabel, currentTempLabel, minMaxTempLabel].forEach {
+            addSubview($0)
+        }
+
+        locationLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(40)  // 화면 맨 위에 위치
+            $0.centerX.equalToSuperview()
         }
         
-        weatherIcon.snp.makeConstraints { make in
-            make.top.equalTo(locationLabel.snp.bottom).offset(20)  // 지역명 아래에 위치
-            make.centerX.equalToSuperview()
-            make.width.height.equalTo(100)  // 아이콘 크기 설정
+        weatherIcon.snp.makeConstraints {
+            $0.top.equalTo(locationLabel.snp.bottom).offset(20)  // 지역명 아래에 위치
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(100)  // 아이콘 크기 설정
         }
         
-        weatherStatusLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherIcon.snp.bottom).offset(16)  // 심볼 아래에 날씨 상태 위치
-            make.centerX.equalToSuperview()
+        weatherStatusLabel.snp.makeConstraints {
+            $0.top.equalTo(weatherIcon.snp.bottom).offset(16)  // 심볼 아래에 날씨 상태 위치
+            $0.centerX.equalToSuperview()
         }
         
-        currentTempLabel.snp.makeConstraints { make in
-            make.top.equalTo(weatherStatusLabel.snp.bottom).offset(16)  // 현재 기온 위치
-            make.centerX.equalToSuperview()
+        currentTempLabel.snp.makeConstraints {
+            $0.top.equalTo(weatherStatusLabel.snp.bottom).offset(16)  // 현재 기온 위치
+            $0.centerX.equalToSuperview()
         }
         
-        minMaxTempLabel.snp.makeConstraints { make in
-            make.top.equalTo(currentTempLabel.snp.bottom).offset(16)  // 최저, 최고 기온 위치
-            make.centerX.equalToSuperview()
+        minMaxTempLabel.snp.makeConstraints {
+            $0.top.equalTo(currentTempLabel.snp.bottom).offset(16)  // 최저, 최고 기온 위치
+            $0.centerX.equalToSuperview()
         }
     }
     
-    // Functions to update the UI
+    // UI 업데이트 함수들
     func updateLocationLabel(_ locationName: String) {
         locationLabel.text = locationName
     }
