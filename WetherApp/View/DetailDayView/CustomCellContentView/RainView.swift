@@ -18,7 +18,7 @@ class RainView: UIView {
         let label = UILabel()
         label.text = "강수량"
         label.font = .systemFont(ofSize: 18)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .center
         return label
     }()
@@ -27,8 +27,8 @@ class RainView: UIView {
     private let rainLabel: UILabel = {
         let label = UILabel()
         label.text = "강수량: 1mm"
-        label.font = .boldSystemFont(ofSize: 20)
-        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 40)
+        label.textColor = .mainGreen
         label.textAlignment = .left
         return label
     }()

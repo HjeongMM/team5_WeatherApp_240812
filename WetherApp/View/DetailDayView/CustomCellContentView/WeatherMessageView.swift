@@ -17,7 +17,7 @@ class WeatherMessageView: UIView {
         let label = UILabel()
         label.text = "오늘은 날씨가 매우 뜨겁습니다. \n 야외활동을 자제해 주세요"
         label.font = .systemFont(ofSize: 23)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.numberOfLines = 2
         label.textAlignment = .center
         return label
@@ -46,4 +46,9 @@ class WeatherMessageView: UIView {
             $0.width.equalTo(300)
         }
     }
+    
+    func configure(with text: String) {
+        WeatherMassageLabel.text = text
+    }
+    
 }

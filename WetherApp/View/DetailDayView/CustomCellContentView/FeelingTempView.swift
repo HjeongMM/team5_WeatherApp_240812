@@ -18,7 +18,7 @@ class FeelingTempView: UIView {
         let label = UILabel()
         label.text = "체감 온도"
         label.font = .systemFont(ofSize: 18)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .center
         return label
     }()
@@ -28,7 +28,7 @@ class FeelingTempView: UIView {
         let label = UILabel()
         label.text = "56°C"
         label.font = .boldSystemFont(ofSize: 40)
-        label.textColor = .black
+        label.textColor = .mainGreen
         label.textAlignment = .center
         return label
     }()
@@ -52,7 +52,7 @@ class FeelingTempView: UIView {
         [titleLabel, feelingTempLabel].forEach { self.addSubview($0) }
         
         titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(5)
+            $0.top.equalToSuperview().offset(10)
             $0.centerX.equalToSuperview()
             $0.height.equalTo(20)
         }
