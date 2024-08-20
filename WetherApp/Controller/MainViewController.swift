@@ -129,8 +129,8 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        showModal(viewController: DetailDayViewController())
-        print("눌림")
+        let detailDayViewController = DetailDayViewController(weatherData: currentWeather, locationName: mainView.locationLabel.text)
+        showModal(viewController: detailDayViewController)
     }
 }
 
@@ -157,7 +157,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             // 셀이 선택될 경우 동작 구현
-        showModal(viewController: DetailDayViewController())
+        let detailDayViewController = DetailDayViewController(weatherData: currentWeather, locationName: mainView.locationLabel.text)
+        showModal(viewController: detailDayViewController)
             print("눌림. 상세페이지로의 연결이 끝나면 삭제할 라인")
         }
 
