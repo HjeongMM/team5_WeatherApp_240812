@@ -128,7 +128,10 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
         guard kind == UICollectionView.elementKindSectionHeader else {
             fatalError("error")
         }
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailDaySectionHeaderView.id, for: indexPath) as! DetailDaySectionHeaderView
+        
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailDaySectionHeaderView.id, for: indexPath) as? DetailDaySectionHeaderView else {
+            return UICollectionReusableView()
+        }
         
         headerView.configure(with: "2024년 08월 13일")
         return headerView

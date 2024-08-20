@@ -50,6 +50,7 @@ class TempView: UIView {
         let imageView = UIImageView()
         imageView.backgroundColor = .mainDarkGray
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .mainGreen
         return imageView
     }()
     
