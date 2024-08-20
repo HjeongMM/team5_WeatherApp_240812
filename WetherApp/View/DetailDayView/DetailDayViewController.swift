@@ -28,23 +28,30 @@ class DetailDayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        fetchWeatherData()
     }
     
     //MARK: - Method
     
-//    private func fetchWeatherData() {
-//        let lat = 37.5665
-//        let lon = 126.9780
-//        
-//        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon) { [weak self] result in
-//            switch result {
-//            case .
-//            }
-//        }
-//    }
+    private func fetchWeatherData() {
+        let lat = 37.5665
+        let lon = 126.9780
+        
+        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon: lon) { [weak self] result in
+            switch result {
+            case .success(let weatherData):
+                self?.weatherData = weatherData
+                DispatchQueue.main.async {
+                    self?.detailDayCollectionView.reloadData()
+                }
+            case .failure(let error):
+                print("Failed to fetch current weather data: \(error)")
+            }
+        }
+    }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .mainDarkGray
         view.addSubview(detailDayCollectionView)
         
         detailDayCollectionView.snp.makeConstraints {
@@ -102,15 +109,18 @@ class DetailDayViewController: UIViewController {
 
 extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return 6
+        return weatherData != nil ? 6 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let weatherData = weatherData, let weatherIcon = weatherIcon else {
-            return WeatherDetailCollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDetailCollectionViewCell.id, for: indexPath) as? WeatherDetailCollectionViewCell else {
+            return UICollectionViewCell()
         }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WeatherDetailCollectionViewCell.id, for: indexPath) as! WeatherDetailCollectionViewCell
-        cell.configure(for: indexPath.item, with: weatherData, image: weatherIcon)
+        if let weatherData = weatherData {
+            let formtter = WeatherDataFormatter.shared
+            print("Configuring cell for item: \(indexPath.item) with data: \(weatherData)")
+            cell.configure(for: indexPath.item, with: weatherData, formatter: formtter)
+        }
         return cell
     }
     
@@ -118,7 +128,10 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
         guard kind == UICollectionView.elementKindSectionHeader else {
             fatalError("error")
         }
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailDaySectionHeaderView.id, for: indexPath) as! DetailDaySectionHeaderView
+        
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailDaySectionHeaderView.id, for: indexPath) as? DetailDaySectionHeaderView else {
+            return UICollectionReusableView()
+        }
         
         headerView.configure(with: "2024년 08월 13일")
         return headerView

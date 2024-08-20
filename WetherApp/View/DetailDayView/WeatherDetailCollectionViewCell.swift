@@ -24,17 +24,21 @@ final class WeatherDetailCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Method
     
-    func configure(for item: Int, with data: CurrentWeatherResult, image: UIImage?) {
+    func configure(for item: Int, with data: CurrentWeatherResult, formatter: WeatherDataFormatter) {
         // Cell 에 있는 기존의 서브 뷰 제거
         contentView.subviews.forEach { $0.removeFromSuperview() }
-        contentView.backgroundColor = .green
-        contentView.layer.cornerRadius = 15
+        contentView.backgroundColor = .mainDarkGray
+        contentView.layer.borderColor = UIColor.mainGreen.cgColor
+        contentView.layer.borderWidth = 1
+        
+        let weatherIconName = formatter.iconWeatherCondition(data.weather.first?.main ?? "moon")
+        let weatherIconImage = UIImage(systemName: weatherIconName)
         
         // 각 Cell 에 커스텀 뷰 추가 및 데이터 주입
         switch item {
         case 0:
             let tempView = TempView()
-            tempView.configure(with: "최고: \(data.main.temp_max)°C, 최저: \(data.main.temp_min)°C", image: image)
+            tempView.configure(with: "최고: \(data.main.temp_max)", textMin: "최저: \(data.main.temp_min)", image: weatherIconImage)
             contentView.addSubview(tempView)
             tempView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
@@ -55,21 +59,36 @@ final class WeatherDetailCollectionViewCell: UICollectionViewCell {
             } 
         case 3:
             let weatherMessageView = WeatherMessageView()
-            // 습도에 따라 상태메세지가 다르게 출력되는 메서드 만들것!
+            let feelsLikeTemp = data.main.feels_like
+            var weatherMessage: String = "오늘의 날씨"
+            switch feelsLikeTemp {
+            case ..<0:
+                weatherMessage = "매우 춥습니다."
+            case 0..<15:
+                weatherMessage = "적당히 쌀쌀합니다."
+            case 15..<23:
+                weatherMessage = "날씨가 좋습니다."
+            case 23..<32:
+                weatherMessage = "다소 더운 날씨입니다."
+            default:
+                weatherMessage = "매우 덥습니다"
+            }
+            
+            weatherMessageView.configure(with: weatherMessage)
             contentView.addSubview(weatherMessageView)
             weatherMessageView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
         case 4:
             let rainView = RainView()
-            rainView.configure(with: "\(String(describing: data.rain?.threeHour))mm")
+            rainView.configure(with: "\(data.rain?.threeHour ?? 0)mm")
             contentView.addSubview(rainView)
             rainView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
             }
         case 5:
             let windView = WindView()
-            windView.configure(with: "풍속: \(data.wind.speed)m/s, 풍향: \(data.wind.deg)") // 각도에 따라 바람방향을 정하는 계산메서드 만들것
+            windView.configure(with: "풍속: \(data.wind.speed)m/s", degText: "풍향: \(data.wind.deg)") // 각도에 따라 바람방향을 정하는 계산메서드 만들것
             contentView.addSubview(windView)
             windView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
@@ -80,5 +99,3 @@ final class WeatherDetailCollectionViewCell: UICollectionViewCell {
     }
     
 }
-
-// git test

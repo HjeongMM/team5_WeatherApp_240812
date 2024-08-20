@@ -25,6 +25,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .mainDarkGray
         mainView.collectionView.dataSource = self
+        mainView.collectionView.delegate = self
         mainView.tableView.dataSource = self
         mainView.tableView.delegate = self
         setupLocationManager()
@@ -101,9 +102,17 @@ class MainViewController: UIViewController {
             mainView.updateWeatherIcon(iconName)
         }
     }
+    
+    private func showModal(viewController: UIViewController) {
+        if let sheet = viewController.sheetPresentationController {
+            sheet.detents = [.large()]
+        }
+        self.present(viewController, animated: true)
+    }
+    
 }
 
-extension MainViewController: UICollectionViewDataSource {
+extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData).count
     }
@@ -117,6 +126,11 @@ extension MainViewController: UICollectionViewDataSource {
         let iconName = WeatherDataFormatter.shared.iconWeatherCondition(forecast.weather.first?.main ?? "")
         cell.configure(with: forecast, formatter: WeatherDataFormatter.shared, iconName: iconName)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        showModal(viewController: DetailDayViewController())
+        print("눌림")
     }
 }
 
@@ -143,6 +157,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             // 셀이 선택될 경우 동작 구현
+        showModal(viewController: DetailDayViewController())
             print("눌림. 상세페이지로의 연결이 끝나면 삭제할 라인")
         }
 
