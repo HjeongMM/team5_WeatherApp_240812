@@ -14,6 +14,7 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     private let locationManager = LocationManager.shared
     private var weatherDataManager = WeatherDataManager.shared
     private var filteredLocations: [LocationResult] = []
+    private var savedLocations: [SavedLocation] = []
     
     var isHiddenFlag: Bool = false
     
@@ -26,6 +27,21 @@ class ListViewController: UIViewController, UISearchBarDelegate {
         setupDelegates()
         setupCollectionView()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(locationAdded), name: Notification.Name("LocationAdded"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadSavedLocations()
+    }
+    
+    private func loadSavedLocations() {
+        savedLocations = SavedLocationManager.shared.getSavedLocations()
+        listView.favoriteLocationCollectionView.reloadData()
+    }
+    
+    @objc private func locationAdded() {
+        loadSavedLocations()
     }
     
     private func setupCollectionView() {
@@ -112,7 +128,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if collectionView == listView.locationSearchCollectionView {
             return filteredLocations.count
         } else if collectionView == listView.favoriteLocationCollectionView {
-            return FavoriteLocation.list.count
+            return savedLocations.count
         }
         return 0
     }
@@ -129,8 +145,8 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteLocationCollectionViewCell.id, for: indexPath) as? FavoriteLocationCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            let locationList = FavoriteLocation.list[indexPath.item]
-            cell.configure(locationList)
+            let location = savedLocations[indexPath.item]
+            cell.configure(location)
             return cell
         }
         return UICollectionViewCell()
@@ -144,20 +160,3 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
 }
-// MARK: - 지역 저장 리스트
-//extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return FavoriteLocation.list.count
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteLocationCollectionViewCell.id, for: indexPath) as? FavoriteLocationCollectionViewCell else {
-//            return UICollectionViewCell()
-//        }
-//        let locationList = FavoriteLocation.list[indexPath.item]
-//        cell.configure(locationList)
-//        return cell
-//    }
-//    
-//    
-//}
