@@ -8,12 +8,12 @@
 import UIKit
 import SnapKit
 
-class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
-    
+class ListView: UIView, UISearchBarDelegate {
+
     // MARK: - Static Properties
     
     static let cellIdentifier = "WeatherCell"
-//    static let favoriteLocationCollectionViewCellIdentifier = "favoriteLocationCollectionViewCell"
+    static let favoriteLocationCollectionViewCellIdentifier = "favoriteLocationCollectionViewCell"
   
     // MARK: - UI Elements
     
@@ -56,22 +56,26 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         let locationSearchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        locationSearchCollectionView.layer.borderColor = UIColor.mainGreen.cgColor
-        locationSearchCollectionView.layer.borderWidth = 1
         locationSearchCollectionView.backgroundColor = .mainDarkGray // 컬렉션 뷰의 배경색을 mainDarkGray로 설정
         locationSearchCollectionView.isHidden = true
+        locationSearchCollectionView.layer.borderColor = UIColor.mainGreen.cgColor
+        locationSearchCollectionView.layer.borderWidth = 1
         return locationSearchCollectionView
     }()
     
-//    private let favoriteLocationCollectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.minimumLineSpacing = 10
-//        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    let favoriteLocationCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 16
+        layout.minimumInteritemSpacing = 0
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 60)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 //        collectionView.layer.borderColor = UIColor.mainGreen.cgColor
 //        collectionView.layer.borderWidth = 1
-//        collectionView.backgroundColor = .mainDarkGray
-//        return collectionView
-//    }()
+        collectionView.backgroundColor = .mainDarkGray
+        return collectionView
+    }()
     
     private func setupSearchBar() {
         searchBar.delegate = self
@@ -83,22 +87,18 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         super.init(frame: frame)
         backgroundColor = .mainDarkGray // 뷰의 배경색을 mainDarkGray로 설정
         setupView()
-        setupCollectionView()
+   
         setupSearchBar()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        backgroundColor = .white // 뷰의 배경색을 mainDarkGray로 설정
-        setupView()
-        setupCollectionView()
-        setupSearchBar()
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Setup Methods
     
     private func setupView() {
-        [locationSearchLabel, searchBar, locationSearchCollectionView].forEach {
+        [locationSearchLabel, searchBar, favoriteLocationCollectionView, locationSearchCollectionView].forEach {
             addSubview($0)
         }
         locationSearchLabel.snp.makeConstraints {
@@ -115,12 +115,12 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
             $0.height.equalTo(50)
         }
         
-//        favoriteLocationCollectionView.snp.makeConstraints {
-//            $0.top.equalTo(searchBar.snp.bottom).offset(10)
-//            $0.centerX.equalToSuperview()
-//            $0.width.equalTo(350)
-//            $0.height.equalTo(350)
-//        }
+        favoriteLocationCollectionView.snp.makeConstraints {
+            $0.top.equalTo(searchBar.snp.bottom).offset(24)
+            $0.centerX.equalToSuperview()
+            $0.width.equalToSuperview()
+            $0.height.equalTo(350)
+        }
         
         locationSearchCollectionView.snp.makeConstraints {
             $0.left.right.equalTo(searchBar)
@@ -130,14 +130,7 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         
     }
     
-    private func setupCollectionView() {
-        locationSearchCollectionView.dataSource = self
-        locationSearchCollectionView.delegate = self
-        locationSearchCollectionView.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: ListView.cellIdentifier)
-//        favoriteLocationCollectionView.dataSource = self
-//        favoriteLocationCollectionView.delegate = self
-//        favoriteLocationCollectionView.register(FavoriteLocationCollectionViewCell.self, forCellWithReuseIdentifier: fav)
-    }
+    
     
     // MARK: - Layout Methods
     
@@ -151,16 +144,5 @@ class ListView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         }
     }
     
-    // MARK: - UICollectionViewDataSource
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListView.cellIdentifier, for: indexPath) as? ListCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        return cell
-    }
+
 }

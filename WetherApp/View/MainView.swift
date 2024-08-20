@@ -95,7 +95,7 @@ class MainView: UIView {
         [mainStackView, collectionView, tableView].forEach { addSubview($0) }
         
         mainStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(80)
+            $0.top.equalToSuperview().offset(60)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(340)
             $0.height.equalTo(300)

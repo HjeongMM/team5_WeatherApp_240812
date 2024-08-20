@@ -10,10 +10,12 @@ import CoreLocation
 
 class ListViewController: UIViewController, UISearchBarDelegate {
     private let listView = ListView()
+    private var currentWeather: CurrentWeatherResult?
     private let locationManager = LocationManager.shared
     private var weatherDataManager = WeatherDataManager.shared
     private var filteredLocations: [LocationResult] = []
-    private var currentWeather: CurrentWeatherResult?
+    private var savedLocations: [SavedLocation] = []
+    
     var isHiddenFlag: Bool = false
     
     override func loadView() {
@@ -23,13 +25,37 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDelegates()
+        setupCollectionView()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(locationAdded), name: Notification.Name("LocationAdded"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadSavedLocations()
+    }
+    
+    private func loadSavedLocations() {
+        savedLocations = SavedLocationManager.shared.getSavedLocations()
+        listView.favoriteLocationCollectionView.reloadData()
+    }
+    
+    @objc private func locationAdded() {
+        loadSavedLocations()
+    }
+    
+    private func setupCollectionView() {
+        listView.locationSearchCollectionView.dataSource = self
+        listView.locationSearchCollectionView.delegate = self
+        listView.locationSearchCollectionView.register(ListCollectionViewCell.self, forCellWithReuseIdentifier: ListView.cellIdentifier)
+        listView.favoriteLocationCollectionView.dataSource = self
+        listView.favoriteLocationCollectionView.delegate = self
+        listView.favoriteLocationCollectionView.register(FavoriteLocationCollectionViewCell.self, forCellWithReuseIdentifier: FavoriteLocationCollectionViewCell.id)
     }
     
     private func setupDelegates() {
         listView.searchBar.delegate = self
-        listView.locationSearchCollectionView.delegate = self
-        listView.locationSearchCollectionView.dataSource = self
+
     }
     
     // MARK: - 서치바 Delegate
@@ -68,50 +94,69 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     }
     
     private func fetchWeatherForLocation(lat: Double, lon: Double, locationName: String) {
-        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon: lon) { [weak self] result in
-            switch result {
-            case .success(let currentWeather):
-                DispatchQueue.main.async {
-                    self?.presentAddRegionViewController(weatherData: currentWeather, locationName: locationName)
-                }
-            case .failure(let error):
-                print("Failed to fetch weather data: \(error)")
-            }
-        }
+        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+            let addRegionViewController = AddRegionViewController()
+            addRegionViewController.locationName = locationName
+            addRegionViewController.coordinate = coordinate
+            addRegionViewController.modalPresentationStyle = .pageSheet
+            present(addRegionViewController, animated: true, completion: nil)
     }
     
     
     // MARK: - 선택된 지역의 날씨 정보 표시
     
-    func presentAddRegionViewController(weatherData: CurrentWeatherResult, locationName: String) {
+    func presentAddRegionViewController(weatherData: CurrentWeatherResult, locationName: String, coordinate: CLLocationCoordinate2D) {
         let addRegionViewController = AddRegionViewController()
-        addRegionViewController.currentWeather = weatherData
+        currentWeather = weatherData
         addRegionViewController.locationName = locationName
+        addRegionViewController.coordinate = coordinate
         addRegionViewController.modalPresentationStyle = .pageSheet
         present(addRegionViewController, animated: true, completion: nil)
     }
 }
 
 
-// MARK: - 컬렉션 뷰 Delegate, DataSource
+
+
+
+
+
+// MARK: - 이 컬렉션뷰는 검색창 컬렉션뷰임 Delegate, DataSource
 
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedLocation = filteredLocations[indexPath.row]
-        fetchWeatherForLocation(lat: selectedLocation.lat, lon: selectedLocation.lon, locationName: "\(selectedLocation.name), \(selectedLocation.country)")
-        listView.locationSearchCollectionView.isHidden = true
-    }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredLocations.count
+        if collectionView == listView.locationSearchCollectionView {
+            return filteredLocations.count
+        } else if collectionView == listView.favoriteLocationCollectionView {
+            return savedLocations.count
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListView.cellIdentifier, for: indexPath) as? ListCollectionViewCell else {
-            return UICollectionViewCell()
+        if collectionView == listView.locationSearchCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListView.cellIdentifier, for: indexPath) as? ListCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let location = filteredLocations[indexPath.row]
+            cell.configure(with: location.formattedKoreanLocationName())
+            return cell
+        } else if collectionView == listView.favoriteLocationCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteLocationCollectionViewCell.id, for: indexPath) as? FavoriteLocationCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let location = savedLocations[indexPath.item]
+            cell.configure(location)
+            return cell
         }
-        let location = filteredLocations[indexPath.row]
-        cell.configure(with: location.formattedKoreanLocationName())
-        return cell
+        return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == listView.locationSearchCollectionView {
+            let selectedLocation = filteredLocations[indexPath.row]
+            fetchWeatherForLocation(lat: selectedLocation.lat, lon: selectedLocation.lon, locationName: "\(selectedLocation.name), \(selectedLocation.country)")
+            listView.locationSearchCollectionView.isHidden = true
+        }
     }
 }
