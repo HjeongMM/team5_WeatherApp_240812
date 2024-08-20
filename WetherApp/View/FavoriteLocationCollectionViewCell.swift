@@ -41,26 +41,11 @@ class FavoriteLocationCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupCell() {
-        
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor.mainGreen.cgColor
-
     }
     
-    func configure(_ location: FavoriteLocation) {
-        locationLabel.text = location.locationName
+    func configure(_ location: SavedLocation) {
+        locationLabel.text = location.name
     }
-}
-
-struct FavoriteLocation {
-    let locationName: String
-}
-
-extension FavoriteLocation {
-    static let list = [FavoriteLocation(locationName: "1번구역"),
-                       FavoriteLocation(locationName: "1번구역"),
-                       FavoriteLocation(locationName: "1번구역"),
-                       FavoriteLocation(locationName: "1번구역"),
-    
-    ]
 }
