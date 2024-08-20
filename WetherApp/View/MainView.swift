@@ -57,15 +57,6 @@ class MainView: UIView {
         return stackView
     }()
     
-    private func createLabel() -> UILabel {
-        let label = UILabel()
-        label.text = "최저 최고"
-        label.textAlignment = .center
-        label.textColor = .mainGreen
-        label.font = .systemFont(ofSize: 16)
-        return label
-    }
-    
     let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -77,28 +68,6 @@ class MainView: UIView {
         return collectionView
     }()
     
-    func addBordersToCollectionView() {
-        let backgroundView = UIView(frame: collectionView.bounds)
-        backgroundView.backgroundColor = .clear
-        let topBorder = UIView(frame: CGRect(x: 0, y: 0, width: backgroundView.frame.width, height: 1))
-        topBorder.backgroundColor = .mainGreen
-        let bottomBorder = UIView(frame: CGRect(x: 0, y: backgroundView.frame.height - 1, width: backgroundView.frame.width, height: 1))
-        bottomBorder.backgroundColor = .mainGreen
-        backgroundView.addSubview(topBorder)
-        backgroundView.addSubview(bottomBorder)
-        collectionView.contentInset = .zero
-        collectionView.backgroundView = backgroundView
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupCurrentWeatherLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
@@ -108,13 +77,22 @@ class MainView: UIView {
         return tableView
     }()
     
+    var addButton: UIButton?
+    var cancelButton: UIButton?
     
-    // MARK: - Auto Layout
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayout()
+    }
     
-    private func setupCurrentWeatherLayout() {
-        [mainStackView, collectionView, tableView].forEach {
-            self.addSubview($0)
-        }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupLayout() {
+        backgroundColor = .mainDarkGray
+        
+        [mainStackView, collectionView, tableView].forEach { addSubview($0) }
         
         mainStackView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(80)
@@ -140,11 +118,49 @@ class MainView: UIView {
         setupMainStackView()
     }
     
+    
+    //MARK: - 모달창으로 접근할 시 버튼 생성
+    func addCancelButton() {
+        guard cancelButton == nil else { return }
+        
+        let button = UIButton(type: .system)
+        button.setTitle("취소", for: .normal)
+        button.tintColor = .mainGreen
+        
+        addSubview(button)
+        button.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(10)
+            $0.leading.equalToSuperview().offset(10)
+            $0.width.equalTo(50)
+            $0.height.equalTo(50)
+        }
+        
+        self.cancelButton = button
+    }
+    
+    func addAddButton() {
+        guard addButton == nil else { return }
+        
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = .mainGreen
+        
+        addSubview(button)
+        button.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(10)
+            $0.trailing.equalToSuperview().offset(-10)
+            $0.width.equalTo(50)
+            $0.height.equalTo(50)
+        }
+        
+        self.addButton = button
+    }
+    
     private func setupMainStackView() {
         [locationLabel, weatherIcon, weatherStatusLabel, tempLabel, minMaxStackview].forEach {
             self.addSubview($0)
         }
-
+        
         locationLabel.snp.makeConstraints {
             $0.top.equalTo(mainStackView.snp.top).offset(20)
             $0.centerX.equalToSuperview()
@@ -191,6 +207,28 @@ class MainView: UIView {
         }
     }
     
+    private func createLabel() -> UILabel {
+        let label = UILabel()
+        label.text = "최저 최고"
+        label.textAlignment = .center
+        label.textColor = .mainGreen
+        label.font = .systemFont(ofSize: 16)
+        return label
+    }
+    
+    func addBordersToCollectionView() {
+        let backgroundView = UIView(frame: collectionView.bounds)
+        backgroundView.backgroundColor = .clear
+        let topBorder = UIView(frame: CGRect(x: 0, y: 0, width: backgroundView.frame.width, height: 1))
+        topBorder.backgroundColor = .mainGreen
+        let bottomBorder = UIView(frame: CGRect(x: 0, y: backgroundView.frame.height - 1, width: backgroundView.frame.width, height: 1))
+        bottomBorder.backgroundColor = .mainGreen
+        backgroundView.addSubview(topBorder)
+        backgroundView.addSubview(bottomBorder)
+        collectionView.contentInset = .zero
+        collectionView.backgroundView = backgroundView
+    }
+    
     func updateLocationLabel(_ locationName: String) {
         locationLabel.text = locationName
     }
@@ -213,5 +251,3 @@ class MainView: UIView {
         }
     }
 }
-
-
