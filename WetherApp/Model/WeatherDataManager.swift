@@ -9,6 +9,11 @@ import Foundation
 import CoreLocation
 
 class WeatherDataManager {
+    static let shared = WeatherDataManager()
+    private let formatter = WeatherDataFormatter.shared
+    
+    private init() {}
+    
     func formatWeatherData(_ currentWeather: CurrentWeatherResult) -> (description: String, temp: Int, minTemp: Int, maxTemp: Int) {
         let temp = Int(currentWeather.main.temp)
         let weatherDescription = currentWeather.weather.first?.main ?? ""
