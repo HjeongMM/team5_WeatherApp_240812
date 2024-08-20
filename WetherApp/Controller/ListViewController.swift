@@ -13,6 +13,8 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     private let locationManager = LocationManager.shared
     private var weatherDataManager = WeatherDataManager.shared
     private var filteredLocations: [LocationResult] = []
+    private var currentWeather: CurrentWeatherResult?
+    var isHiddenFlag: Bool = false
     
     override func loadView() {
         view = listView
@@ -21,27 +23,33 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDelegates()
+        
     }
     
     private func setupDelegates() {
         listView.searchBar.delegate = self
-        listView.weatherCollectionView.delegate = self
-        listView.weatherCollectionView.dataSource = self
+        listView.locationSearchCollectionView.delegate = self
+        listView.locationSearchCollectionView.dataSource = self
     }
-    
     
     // MARK: - 서치바 Delegate
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else {
+        if searchText.isEmpty {
             filteredLocations.removeAll()
-            listView.weatherCollectionView.reloadData()
-            return
+            listView.locationSearchCollectionView.reloadData()
+            listView.locationSearchCollectionView.isHidden = true
+        } else {
+            fetchLocations(for: searchText)
+            listView.locationSearchCollectionView.isHidden = false
         }
-        
-        fetchLocations(for: searchText)
     }
     
+    
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        listView.locationSearchCollectionView.isHidden = false
+    }
     
     // MARK: - 사용자가 입력한 검색어로 지역 목록을 가져오는 부분
     
@@ -51,7 +59,7 @@ class ListViewController: UIViewController, UISearchBarDelegate {
             case .success(let locations):
                 self?.filteredLocations = locations
                 DispatchQueue.main.async {
-                    self?.listView.weatherCollectionView.reloadData()
+                    self?.listView.locationSearchCollectionView.reloadData()
                 }
             case .failure(let error):
                 print("\(error)")
@@ -77,7 +85,7 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     
     func presentAddRegionViewController(weatherData: CurrentWeatherResult, locationName: String) {
         let addRegionViewController = AddRegionViewController()
-        addRegionViewController.weatherData = weatherData
+        addRegionViewController.currentWeather = weatherData
         addRegionViewController.locationName = locationName
         addRegionViewController.modalPresentationStyle = .pageSheet
         present(addRegionViewController, animated: true, completion: nil)
@@ -91,6 +99,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedLocation = filteredLocations[indexPath.row]
         fetchWeatherForLocation(lat: selectedLocation.lat, lon: selectedLocation.lon, locationName: "\(selectedLocation.name), \(selectedLocation.country)")
+        listView.locationSearchCollectionView.isHidden = true
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -102,7 +111,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return UICollectionViewCell()
         }
         let location = filteredLocations[indexPath.row]
-        cell.configure(with: "\(location.name), \(location.country)")
+        cell.configure(with: location.formattedKoreanLocationName())
         return cell
     }
 }
