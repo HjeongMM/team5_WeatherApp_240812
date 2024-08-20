@@ -14,6 +14,16 @@ class DetailDayViewController: UIViewController {
     
     private var weatherData: CurrentWeatherResult?
     private var weatherIcon: UIImage?
+    private var locationName: String?
+    
+    private let locationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "(검색된) 위치"
+        label.textColor = .mainGreen
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        return label
+    }()
     
     lazy var detailDayCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
@@ -25,6 +35,16 @@ class DetailDayViewController: UIViewController {
         return collectionView
     }()
     
+    init(weatherData: CurrentWeatherResult?, locationName: String?) {
+        self.weatherData = weatherData
+        self.locationName = locationName
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -34,28 +54,29 @@ class DetailDayViewController: UIViewController {
     //MARK: - Method
     
     private func fetchWeatherData() {
-        let lat = 37.5665
-        let lon = 126.9780
-        
-        NetworkManager.shared.fetchCurrentWeatherData(lat: lat, lon: lon) { [weak self] result in
-            switch result {
-            case .success(let weatherData):
-                self?.weatherData = weatherData
-                DispatchQueue.main.async {
-                    self?.detailDayCollectionView.reloadData()
-                }
-            case .failure(let error):
-                print("Failed to fetch current weather data: \(error)")
-            }
+        guard let weatherData = weatherData else {
+            print("Weather data is not available")
+            return
+        }
+        DispatchQueue.main.async {
+            self.detailDayCollectionView.reloadData()
         }
     }
     
     private func setupUI() {
         view.backgroundColor = .mainDarkGray
-        view.addSubview(detailDayCollectionView)
+        [locationLabel, detailDayCollectionView].forEach { view.addSubview($0) }
+        
+        locationLabel.text = locationName ?? "(검색된) 위치"
+        
+        locationLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(10)
+            $0.centerX.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(20)
+        }
         
         detailDayCollectionView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
+            $0.top.equalTo(locationLabel.snp.bottom).offset(10)
             $0.leading.equalToSuperview().offset(5)
             $0.trailing.equalToSuperview().offset(-5)
             $0.bottom.equalToSuperview().offset(-15)

@@ -18,7 +18,7 @@ class MainView: UIView {
         return stackView
     }()
     
-    private let locationLabel: UILabel = {
+    let locationLabel: UILabel = {
         let label = UILabel()
         label.text = "(검색된) 위치"
         label.textColor = .mainGreen
