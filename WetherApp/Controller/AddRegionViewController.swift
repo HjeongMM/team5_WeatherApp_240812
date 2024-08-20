@@ -6,42 +6,75 @@
 //
 
 import UIKit
+import CoreLocation
 
-class AddRegionViewController: UIViewController {
-
-    var weatherData: CurrentWeatherResult?  // 날씨 데이터
-    var locationName: String?  // 지역 이름을 저장하는 속성
+class AddRegionViewController: MainViewController {
+    private let listView = ListView()
+    var currentWeather: CurrentWeatherResult?
+    var locationName: String?
+    private var coordinate: CLLocationCoordinate2D?
     
-    private let addRegionView = AddRegionView()
-    
-    override func loadView() {
-        view = addRegionView
+    private var addRegionView: MainView {
+        return view as! MainView
     }
-    
+    override func loadView() {
+        super.loadView()
+        (view as? MainView)?.addAddButton()
+        (view as? MainView)?.addCancelButton()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .mainDarkGray
+        setupCancelAddButton()
+        updateUI()
+        if let coordinate = coordinate {
+            fetchWeatherData(for: coordinate)
+        }
+    }
+
+    private func setupCancelAddButton() {
+        addRegionView.addButton?.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        addRegionView.cancelButton?.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+    }
+
+    private func updateUI() {
+        if let locationName = locationName {
+            addRegionView.updateLocationLabel(locationName)
+        }
+    }
+
+    @objc private func addButtonTapped() {
+        guard let currentWeather = currentWeather, let locationName = locationName, let coordinate = coordinate else {
+            return
+        }
         
-        // weatherData와 locationName이 설정되었을 경우, 해당 데이터를 이용해 UI 업데이트
-        if let weatherData = weatherData, let locationName = locationName {
-            configure(with: weatherData, locationName: locationName)
+        saveWeatherLocation(name: locationName, coordinate: coordinate, weatherData: currentWeather)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: Notification.Name("LocationAdded"), object: nil)
         }
     }
     
-    func configure(with weatherData: CurrentWeatherResult, locationName: String) {
-        addRegionView.updateLocationLabel(locationName)
-        
-        // WeatherDataFormatter를 사용하여 날씨 상태와 아이콘을 가져옴
-        let weatherStatus = WeatherDataFormatter.shared.translateWeatherCondition(weatherData.weather.first?.main ?? "알 수 없음")
-        let iconName = WeatherDataFormatter.shared.iconWeatherCondition(weatherData.weather.first?.main ?? "")
-        
-        addRegionView.updateWeatherStatus(weatherStatus)
-        addRegionView.updateWeatherIcon(iconName)
-        
-        // 기온 정보 업데이트
-        let currentTemp = Int(weatherData.main.temp)
-        let minTemp = Int(weatherData.main.temp_min)
-        let maxTemp = Int(weatherData.main.temp_max)
-        addRegionView.updateTemperature(current: currentTemp, min: minTemp, max: maxTemp)
+    @objc private func cancelButtonTapped() {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    private func saveWeatherLocation(name: String, coordinate: CLLocationCoordinate2D, weatherData: CurrentWeatherResult) {
+        // UserDefaults를 사용하여 위치 정보 저장해줘야됨
+        let locations = UserDefaults.standard.array(forKey: "SavedLocations") as? [[String: Any]] ?? []
+        let newLocation: [String: Any] = [
+            "name": name,
+            "latitude": coordinate.latitude,
+            "longitude": coordinate.longitude,
+            "temp": weatherData.main.temp,
+            "description": weatherData.weather.first?.description ?? ""
+        ]
+        var updatedLocations = locations
+        updatedLocations.append(newLocation)
+        UserDefaults.standard.set(updatedLocations, forKey: "SavedLocations")
+    }
+
+    override func fetchWeatherData(for coordinate: CLLocationCoordinate2D) {
+        super.fetchWeatherData(for: coordinate)
+        // 추가 fetching 있으면 쓰고
     }
 }
