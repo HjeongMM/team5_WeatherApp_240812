@@ -18,7 +18,7 @@ class MainView: UIView {
         return stackView
     }()
     
-    private let locationLabel: UILabel = {
+    let locationLabel: UILabel = {
         let label = UILabel()
         label.textColor = .mainGreen
         label.textAlignment = .center
@@ -125,6 +125,7 @@ class MainView: UIView {
     
     func addSearchPageButton() {
         guard searchPageButton == nil else { return }
+    
         let button = UIButton()
         button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
         button.tintColor = .mainGreen
@@ -269,3 +270,4 @@ class MainView: UIView {
         }
     }
 }
+

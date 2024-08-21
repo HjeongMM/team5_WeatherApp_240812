@@ -26,7 +26,7 @@ class ListViewController: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         setupDelegates()
         setupCollectionView()
-        
+        customNavigationBackButton()
         NotificationCenter.default.addObserver(self, selector: #selector(locationAdded), name: Notification.Name("LocationAdded"), object: nil)
     }
     
@@ -42,6 +42,10 @@ class ListViewController: UIViewController, UISearchBarDelegate {
     
     @objc private func locationAdded() {
         loadSavedLocations()
+    }
+    
+    private func customNavigationBackButton() {
+        navigationController?.navigationBar.tintColor = .mainGreen
     }
     
     private func setupCollectionView() {
