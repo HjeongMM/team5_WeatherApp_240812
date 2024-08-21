@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-// MARK: - 사용자의 입력을 받아 즐겨찾는 위치로 추가하고 리스트로 보여주기 위한 모델
+// MARK: - 사용자 관심지역 저장, 관리
 
 struct SavedLocation: Codable {
     let name: String

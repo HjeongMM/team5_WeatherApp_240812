@@ -17,18 +17,18 @@ class ListView: UIView, UISearchBarDelegate {
   
     // MARK: - UI Elements
     
-    let locationSearchLabel: UILabel = {
-        let label = UILabel()
-        label.text = "위치 검색"
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 24)
-        label.textColor = .mainGreen // 텍스트 색상을 mainGreen으로 설정
-        return label
-    }()
+//    let locationSearchLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "위치 검색"
+//        label.textAlignment = .left
+//        label.font = UIFont.systemFont(ofSize: 24)
+//        label.textColor = .mainGreen // 텍스트 색상을 mainGreen으로 설정
+//        return label
+//    }()
     
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.placeholder = "도시 또는 공항 검색"
+//        searchBar.placeholder = "도시 또는 공항 검색"
         searchBar.backgroundImage = UIImage()
         searchBar.tintColor = .mainGreen // 서치바의 커서와 버튼 색상을 mainGreen으로 설정
         searchBar.searchTextField.textColor = .mainGreen // 서치바 텍스트 색상 mainGreen으로 설정
@@ -41,7 +41,7 @@ class ListView: UIView, UISearchBarDelegate {
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.mainGreen
         ]
-        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "도시 또는 공항 검색", attributes: placeholderAttributes)
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "관심 위치 검색", attributes: placeholderAttributes)
         
         // 돋보기 아이콘 색상 변경
         if let glassIconView = searchBar.searchTextField.leftView as? UIImageView {
@@ -98,20 +98,20 @@ class ListView: UIView, UISearchBarDelegate {
     // MARK: - Setup Methods
     
     private func setupView() {
-        [locationSearchLabel, searchBar, favoriteLocationCollectionView, locationSearchCollectionView].forEach {
+        [searchBar, favoriteLocationCollectionView, locationSearchCollectionView].forEach {
             addSubview($0)
         }
-        locationSearchLabel.snp.makeConstraints {
-            $0.left.equalTo(safeAreaLayoutGuide.snp.left).offset(16)
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(12)
-            $0.width.equalTo(200)
-            $0.height.equalTo(30)
-        }
+//        locationSearchLabel.snp.makeConstraints {
+//            $0.left.equalTo(safeAreaLayoutGuide.snp.left).offset(16)
+//            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(12)
+//            $0.width.equalTo(200)
+//            $0.height.equalTo(30)
+//        }
         
         searchBar.snp.makeConstraints {
             $0.left.equalTo(safeAreaLayoutGuide.snp.left).offset(8)
             $0.right.equalTo(safeAreaLayoutGuide.snp.right).offset(-8)
-            $0.top.equalTo(locationSearchLabel.snp.bottom).offset(8)
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(8)
             $0.height.equalTo(50)
         }
         
@@ -119,7 +119,7 @@ class ListView: UIView, UISearchBarDelegate {
             $0.top.equalTo(searchBar.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
             $0.width.equalToSuperview()
-            $0.height.equalTo(350)
+            $0.height.equalTo(320)
         }
         
         locationSearchCollectionView.snp.makeConstraints {
