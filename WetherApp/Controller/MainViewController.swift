@@ -9,31 +9,17 @@
 import UIKit
 import CoreLocation
 
-class MainViewController: UIViewController {
-    private let mainView = MainView()
+class MainViewController: ReusableViewController {
     private var currentLocation: CLLocation?
     private let locationManager = LocationManager.shared
-    private let weatherDataManager = WeatherDataManager.shared
-    private var currentWeather: CurrentWeatherResult?
-    private var forecastData: [ForecastWeather] = []
     
     private var mainMainView: MainView? {
         return view as? MainView
     }
     
-    override func loadView() {
-        view = mainView
-        mainMainView?.addSearchPageButton()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .mainDarkGray
-        mainView.collectionView.dataSource = self
-        mainView.collectionView.delegate = self
-        mainView.tableView.dataSource = self
-        mainView.tableView.delegate = self
-        
+        mainMainView?.addSearchPageButton()
         setupLocationManager()
         setupSearchPageButton()
     }
@@ -41,11 +27,6 @@ class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         locationManager.requestCurrentLocation()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        mainView.addBordersToCollectionView()
     }
     
     private func setupLocationManager() {
@@ -100,21 +81,12 @@ class MainViewController: UIViewController {
                     self?.mainView.updateLocationLabel(locationName)
                 }
             }
-        } else {
-            mainView.updateLocationLabel("현재 위치")
         }
         
         if let currentWeatherIcon = currentWeather.weather.first?.main {
             let iconName = WeatherDataFormatter.shared.iconWeatherCondition(currentWeatherIcon)
             mainView.updateWeatherIcon(iconName)
         }
-    }
-    
-    private func showModal(viewController: UIViewController) {
-        if let sheet = viewController.sheetPresentationController {
-            sheet.detents = [.large()]
-        }
-        self.present(viewController, animated: true)
     }
     
     private func setupSearchPageButton() {
@@ -127,56 +99,6 @@ class MainViewController: UIViewController {
             navigationController.pushViewController(listViewController, animated: true)
         }
     }
-}
-
-extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData).count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ThreeHourlyCollectionViewCell", for: indexPath) as? ThreeHourlyCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        let threeHourlyForecasts = WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData)
-        let forecast = threeHourlyForecasts[indexPath.row]
-        let iconName = WeatherDataFormatter.shared.iconWeatherCondition(forecast.weather.first?.main ?? "")
-        cell.configure(with: forecast, formatter: WeatherDataFormatter.shared, iconName: iconName)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailDayViewController = DetailDayViewController(weatherData: currentWeather, locationName: mainView.locationLabel.text)
-        showModal(viewController: detailDayViewController)
-    }
-}
-
-extension MainViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return WeatherDataFormatter.shared.filterForecastData(forecastData).count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell else {
-            return UITableViewCell()
-        }
-        let dailyForecasts = WeatherDataFormatter.shared.filterForecastData(forecastData)
-        let forecast = dailyForecasts[indexPath.row]
-        
-        let day = WeatherDataFormatter.shared.formatDayString(from: forecast.dtTxt, isToday: indexPath.row == 0)
-        let temperature = "\(Int(forecast.main.temp))°C"
-        let iconName = WeatherDataFormatter.shared.iconWeatherCondition(forecast.weather.first?.main ?? "")
-        cell.configure(day: day, temperature: temperature, iconName: iconName)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            // 셀이 선택될 경우 동작 구현
-        let detailDayViewController = DetailDayViewController(weatherData: currentWeather, locationName: mainView.locationLabel.text)
-        showModal(viewController: detailDayViewController)
-            print("눌림. 상세페이지로의 연결이 끝나면 삭제할 라인")
-        }
 }
 
 // MARK: - 위치관련 , 분리 작업 예정
