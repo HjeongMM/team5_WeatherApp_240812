@@ -133,4 +133,27 @@ class WeatherDataFormatter {
             return "moon" // 기본값 (밤)
         }
     }
+    
+    func windDirectionCalculation(_ wind: Double) -> String {
+        switch wind {
+        case 0..<22.5, 337.5..<360:
+            return "북"
+        case 22.5..<67.5:
+            return "북동"
+        case 67.5..<112.5:
+            return "동"
+        case 112.5..<157.5:
+            return "동남"
+        case 157.5..<202.5:
+            return "남"
+        case 202.5..<247.5:
+            return "남서"
+        case 247.5..<292.5:
+            return "서"
+        case 292.5..<337.5:
+            return "북서"
+        default:
+            return "바람없음"
+        }
+    }
 }

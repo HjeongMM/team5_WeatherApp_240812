@@ -177,8 +177,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         showModal(viewController: detailDayViewController)
             print("눌림. 상세페이지로의 연결이 끝나면 삭제할 라인")
         }
-
-    
 }
 
 // MARK: - 위치관련 , 분리 작업 예정

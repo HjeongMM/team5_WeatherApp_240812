@@ -88,7 +88,8 @@ final class WeatherDetailCollectionViewCell: UICollectionViewCell {
             }
         case 5:
             let windView = WindView()
-            windView.configure(with: "풍속: \(data.wind.speed)m/s", degText: "풍향: \(data.wind.deg)") // 각도에 따라 바람방향을 정하는 계산메서드 만들것
+            let windDirection = formatter.windDirectionCalculation(data.wind.deg)
+            windView.configure(with: "풍속: \(data.wind.speed)m/s", degText: "풍향: \(windDirection)풍")
             contentView.addSubview(windView)
             windView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
