@@ -71,8 +71,6 @@ class ListViewController: UIViewController, UISearchBarDelegate {
         }
     }
     
-    
-    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         listView.locationSearchCollectionView.isHidden = false
     }
@@ -102,7 +100,6 @@ class ListViewController: UIViewController, UISearchBarDelegate {
             present(addRegionViewController, animated: true, completion: nil)
     }
     
-    
     // MARK: - 선택된 지역의 날씨 정보 표시
     
     func presentAddRegionViewController(weatherData: CurrentWeatherResult, locationName: String, coordinate: CLLocationCoordinate2D) {
@@ -114,11 +111,6 @@ class ListViewController: UIViewController, UISearchBarDelegate {
         present(addRegionViewController, animated: true, completion: nil)
     }
 }
-
-
-
-
-
 
 
 // MARK: - 이 컬렉션뷰는 검색창 컬렉션뷰임 Delegate, DataSource
@@ -157,6 +149,19 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
             let selectedLocation = filteredLocations[indexPath.row]
             fetchWeatherForLocation(lat: selectedLocation.lat, lon: selectedLocation.lon, locationName: "\(selectedLocation.name), \(selectedLocation.country)")
             listView.locationSearchCollectionView.isHidden = true
+        } else if collectionView == listView.favoriteLocationCollectionView {
+            let selectedLocation = savedLocations[indexPath.item]
+            presentFavoriteModalViewController(for: selectedLocation)
         }
+    }
+    
+    private func presentFavoriteModalViewController(for location: SavedLocation) {
+        let favoriteModalVC = FavoriteModalViewController()
+        favoriteModalVC.savedLocation = location
+        favoriteModalVC.modalPresentationStyle = .pageSheet
+        if let sheet = favoriteModalVC.sheetPresentationController {
+            sheet.detents = [.large()]
+        }
+        present(favoriteModalVC, animated: true, completion: nil)
     }
 }

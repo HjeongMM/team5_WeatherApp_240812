@@ -141,11 +141,6 @@ class AddRegionViewController: UIViewController {
     @objc private func cancelButtonTapped() {
         self.dismiss(animated: true, completion: nil)
     }
-    
-//    private func saveWeatherLocation(name: String, coordinate: CLLocationCoordinate2D, weatherData: CurrentWeatherResult) {
-//        // UserDefaults를 사용하여 위치 정보 저장해줘야됨
-//        let locations = UserDefaults.standard.array(forKey: "SavedLocations") as? [[String: Any]] ?? []
-//    }
 }
 
 

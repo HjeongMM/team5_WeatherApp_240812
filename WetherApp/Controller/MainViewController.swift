@@ -17,8 +17,13 @@ class MainViewController: UIViewController {
     private var currentWeather: CurrentWeatherResult?
     private var forecastData: [ForecastWeather] = []
     
+    private var mainMainView: MainView? {
+        return view as? MainView
+    }
+    
     override func loadView() {
         view = mainView
+        mainMainView?.addSearchPageButton()
     }
     
     override func viewDidLoad() {
@@ -28,7 +33,9 @@ class MainViewController: UIViewController {
         mainView.collectionView.delegate = self
         mainView.tableView.dataSource = self
         mainView.tableView.delegate = self
+        
         setupLocationManager()
+        setupSearchPageButton()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -110,6 +117,16 @@ class MainViewController: UIViewController {
         self.present(viewController, animated: true)
     }
     
+    private func setupSearchPageButton() {
+        mainMainView?.searchPageButton?.addTarget(self, action: #selector(searchPageButtonTapped), for: .touchDown)
+    }
+    
+    @objc private func searchPageButtonTapped() {
+        let listViewController = ListViewController()
+        if let navigationController = self.navigationController {
+            navigationController.pushViewController(listViewController, animated: true)
+        }
+    }
 }
 
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -153,7 +170,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             // 셀이 선택될 경우 동작 구현

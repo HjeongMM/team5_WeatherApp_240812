@@ -6,83 +6,142 @@
 //
 
 import UIKit
+import CoreLocation
 
-private let reuseIdentifier = "Cell"
-
-class FavoriteModalViewController: UICollectionViewController {
-
+class FavoriteModalViewController: UIViewController {
+    private let mainView = MainView()
+    private var currentWeather: CurrentWeatherResult?
+    private var forecastWeather: ForecastWeatherResult?
+    private let weatherDataManager = WeatherDataManager.shared
+    private var forecastData: [ForecastWeather] = []
+    private var savedLocationManager = SavedLocationManager.shared
+    var savedLocation: SavedLocation?
+    var coordinate: CLLocationCoordinate2D?
+    
+    private var favoriteModalView: MainView? {
+        return view as? MainView
+    }
+    
+    override func loadView() {
+        view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        setupCollectionView()
+        setupTableView()
+        loadWeatherData()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
-        // Configure the cell
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        mainView.addBordersToCollectionView()
+    }
     
+    private func setupCollectionView() {
+        favoriteModalView?.collectionView.dataSource = self
+        favoriteModalView?.collectionView.delegate = self
+        favoriteModalView?.collectionView.register(ThreeHourlyCollectionViewCell.self, forCellWithReuseIdentifier: "ThreeHourlyCollectionViewCell")
+    }
+    
+    private func setupTableView() {
+        favoriteModalView?.tableView.dataSource = self
+        favoriteModalView?.tableView.delegate = self
+        favoriteModalView?.tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: "WeatherTableViewCell")
+    }
+    
+    private func loadWeatherData() {
+        guard let savedLocation = savedLocation else { return }
+        
+        let coordinate = CLLocationCoordinate2D(latitude: savedLocation.latitude, longitude: savedLocation.longitude)
+        
+        NetworkManager.shared.fetchCurrentWeatherData(lat: coordinate.latitude, lon: coordinate.longitude) { [weak self] result in
+            switch result {
+            case .success(let weatherData):
+                self?.currentWeather = weatherData
+                DispatchQueue.main.async {
+                    self?.updateUI()
+                }
+            case .failure(let error):
+                print("\(error)")
+            }
+        }
+        
+        NetworkManager.shared.fetchForecastData(lat: coordinate.latitude, lon: coordinate.longitude) { [weak self] result in
+            switch result {
+            case .success(let forecastData):
+                self?.forecastWeather = forecastData
+                self?.forecastData = forecastData.list
+                DispatchQueue.main.async {
+                    self?.favoriteModalView?.collectionView.reloadData()
+                    self?.favoriteModalView?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("\(error)")
+            }
+        }
+    }
+    
+    private func updateUI() {
+        guard let currentWeather = currentWeather else { return }
+        
+        favoriteModalView?.updateLocationLabel(savedLocation?.name ?? "알 수 없는 위치")
+        
+        let formattedData = weatherDataManager.formatWeatherData(currentWeather)
+        favoriteModalView?.updateWeatherUI(with: formattedData)
+        
+        if let weatherStatus = currentWeather.weather.first?.main {
+            let translatedStatus = WeatherDataFormatter.shared.translateWeatherCondition(weatherStatus)
+            favoriteModalView?.updateWeatherStatus(translatedStatus)
+        }
+        
+        if let weatherIcon = currentWeather.weather.first?.main {
+            let iconName = WeatherDataFormatter.shared.iconWeatherCondition(weatherIcon)
+            favoriteModalView?.updateWeatherIcon(iconName)
+        }
+    }
+}
+
+extension FavoriteModalViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData).count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ThreeHourlyCollectionViewCell", for: indexPath) as? ThreeHourlyCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let threeHourlyForecasts = WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData)
+        let forecast = threeHourlyForecasts[indexPath.row]
+        let iconName = WeatherDataFormatter.shared.iconWeatherCondition(forecast.weather.first?.main ?? "")
+        cell.configure(with: forecast, formatter: WeatherDataFormatter.shared, iconName: iconName)
+        
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
-
 }
+
+extension FavoriteModalViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return WeatherDataFormatter.shared.filterForecastData(forecastData).count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "WeatherTableViewCell", for: indexPath) as? WeatherTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let dailyForecasts = WeatherDataFormatter.shared.filterForecastData(forecastData)
+        let forecast = dailyForecasts[indexPath.row]
+        let day = WeatherDataFormatter.shared.formatDayString(from: forecast.dtTxt, isToday: indexPath.row == 0)
+        let temperature = "\(Int(forecast.main.temp))°C"
+        let iconName = WeatherDataFormatter.shared.iconWeatherCondition(forecast.weather.first?.main ?? "")
+        cell.configure(day: day, temperature: temperature, iconName: iconName)
+        
+        return cell
+    }
+}
+
+
+
+
