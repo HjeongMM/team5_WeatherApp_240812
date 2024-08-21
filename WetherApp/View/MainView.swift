@@ -125,6 +125,7 @@ class MainView: UIView {
     
     func addSearchPageButton() {
         guard searchPageButton == nil else { return }
+
         let button = UIButton()
         button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
         button.tintColor = .mainGreen
@@ -269,3 +270,4 @@ class MainView: UIView {
         }
     }
 }
+
