@@ -54,10 +54,10 @@ class DetailDayViewController: UIViewController {
     //MARK: - Method
     
     private func fetchWeatherData() {
-        guard let weatherData = weatherData else {
-            print("Weather data is not available")
-            return
-        }
+//        guard let weatherData = weatherData else {
+//            print("Weather data is not available")
+//            return
+//        }
         DispatchQueue.main.async {
             self.detailDayCollectionView.reloadData()
         }
@@ -146,15 +146,19 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
         guard kind == UICollectionView.elementKindSectionHeader else {
             fatalError("error")
         }
-        
         guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: DetailDaySectionHeaderView.id, for: indexPath) as? DetailDaySectionHeaderView else {
             return UICollectionReusableView()
         }
-        
-        headerView.configure(with: "2024년 08월 13일")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        let todayDate = dateFormatter.string(from: Date())
+    
+        headerView.configure(with: todayDate)
         return headerView
     }
     
