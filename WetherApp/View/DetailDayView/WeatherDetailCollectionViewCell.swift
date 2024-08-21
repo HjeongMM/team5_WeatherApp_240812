@@ -81,7 +81,7 @@ final class WeatherDetailCollectionViewCell: UICollectionViewCell {
             }
         case 4:
             let rainView = RainView()
-            rainView.configure(with: "\(data.rain?.threeHour ?? 0)mm")
+            rainView.configure(with: "\(data.rain?.oneHour ?? 0)mm")
             contentView.addSubview(rainView)
             rainView.snp.makeConstraints {
                 $0.edges.equalToSuperview()
