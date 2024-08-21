@@ -153,16 +153,13 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
-    
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             // 셀이 선택될 경우 동작 구현
         let detailDayViewController = DetailDayViewController(weatherData: currentWeather, locationName: mainView.locationLabel.text)
         showModal(viewController: detailDayViewController)
             print("눌림. 상세페이지로의 연결이 끝나면 삭제할 라인")
         }
-
-    
 }
 
 // MARK: - 위치관련 , 분리 작업 예정
