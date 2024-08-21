@@ -157,7 +157,7 @@ extension DetailDayViewController: UICollectionViewDataSource, UICollectionViewD
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         dateFormatter.locale = Locale(identifier: "ko_KR")
         let todayDate = dateFormatter.string(from: Date())
-        
+    
         headerView.configure(with: todayDate)
         return headerView
     }
