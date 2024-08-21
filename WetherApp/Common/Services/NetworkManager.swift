@@ -149,7 +149,6 @@ class NetworkManager {
     }
     
     private func fetchData<T: Decodable>(url: URL, completion: @escaping (Result<T, Error>) -> Void) {
-        print("Requesting data from URL: \(url.absoluteString)")
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 completion(.failure(error))

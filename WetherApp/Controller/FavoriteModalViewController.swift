@@ -1,39 +1,36 @@
 //
-//  AddRegionViewController.swift
+//  FavoriteModalViewController.swift
 //  WetherApp
 //
-//  Created by t2023-m0112 on 8/19/24.
+//  Created by 임혜정 on 8/21/24.
 //
 
 import UIKit
 import CoreLocation
 
-class AddRegionViewController: UIViewController {
+class FavoriteModalViewController: UIViewController {
     private let mainView = MainView()
     private var currentWeather: CurrentWeatherResult?
     private var forecastWeather: ForecastWeatherResult?
     private let weatherDataManager = WeatherDataManager.shared
     private var forecastData: [ForecastWeather] = []
     private var savedLocationManager = SavedLocationManager.shared
-    var locationName: String?
+    var savedLocation: SavedLocation?
     var coordinate: CLLocationCoordinate2D?
     
-    private var addRegionView: MainView? {
+    private var favoriteModalView: MainView? {
         return view as? MainView
     }
     
     override func loadView() {
         view = mainView
-        addRegionView?.addAddButton()
-        addRegionView?.addCancelButton()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCancelAddButton()
         setupCollectionView()
         setupTableView()
-        fetchWeatherData()
+        loadWeatherData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -41,111 +38,71 @@ class AddRegionViewController: UIViewController {
         mainView.addBordersToCollectionView()
     }
     
-    private func setupCancelAddButton() {
-        addRegionView?.addButton?.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-        addRegionView?.cancelButton?.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-    }
-    
     private func setupCollectionView() {
-        addRegionView?.collectionView.dataSource = self
-        addRegionView?.collectionView.delegate = self
-        addRegionView?.collectionView.register(ThreeHourlyCollectionViewCell.self, forCellWithReuseIdentifier: "ThreeHourlyCollectionViewCell")
+        favoriteModalView?.collectionView.dataSource = self
+        favoriteModalView?.collectionView.delegate = self
+        favoriteModalView?.collectionView.register(ThreeHourlyCollectionViewCell.self, forCellWithReuseIdentifier: "ThreeHourlyCollectionViewCell")
     }
-
-    private func setupTableView() {
-            addRegionView?.tableView.dataSource = self
-            addRegionView?.tableView.delegate = self
-            addRegionView?.tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: "WeatherTableViewCell")
-        }
     
-    private func fetchWeatherData() {
-        guard let coordinate = coordinate else { return }
-     
-        let group = DispatchGroup()
+    private func setupTableView() {
+        favoriteModalView?.tableView.dataSource = self
+        favoriteModalView?.tableView.delegate = self
+        favoriteModalView?.tableView.register(WeatherTableViewCell.self, forCellReuseIdentifier: "WeatherTableViewCell")
+    }
+    
+    private func loadWeatherData() {
+        guard let savedLocation = savedLocation else { return }
         
-        group.enter()
+        let coordinate = CLLocationCoordinate2D(latitude: savedLocation.latitude, longitude: savedLocation.longitude)
+        
         NetworkManager.shared.fetchCurrentWeatherData(lat: coordinate.latitude, lon: coordinate.longitude) { [weak self] result in
-            defer { group.leave() }
             switch result {
             case .success(let weatherData):
                 self?.currentWeather = weatherData
+                DispatchQueue.main.async {
+                    self?.updateUI()
+                }
             case .failure(let error):
-                print(" \(error)")
+                print("\(error)")
             }
         }
         
-        group.enter()
         NetworkManager.shared.fetchForecastData(lat: coordinate.latitude, lon: coordinate.longitude) { [weak self] result in
-            defer { group.leave() }
             switch result {
             case .success(let forecastData):
                 self?.forecastWeather = forecastData
                 self?.forecastData = forecastData.list
-            case .failure(let error): print(" \(error)")
+                DispatchQueue.main.async {
+                    self?.favoriteModalView?.collectionView.reloadData()
+                    self?.favoriteModalView?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("\(error)")
             }
-        }
-        
-        group.notify(queue: .main) { [weak self] in
-            self?.updateUI()
         }
     }
     
-    func updateUI() {
+    private func updateUI() {
         guard let currentWeather = currentWeather else { return }
         
-        addRegionView?.updateLocationLabel(locationName ?? "알 수 없는 위치")
+        favoriteModalView?.updateLocationLabel(savedLocation?.name ?? "알 수 없는 위치")
         
         let formattedData = weatherDataManager.formatWeatherData(currentWeather)
-        addRegionView?.updateWeatherUI(with: formattedData)
+        favoriteModalView?.updateWeatherUI(with: formattedData)
         
         if let weatherStatus = currentWeather.weather.first?.main {
             let translatedStatus = WeatherDataFormatter.shared.translateWeatherCondition(weatherStatus)
-            addRegionView?.updateWeatherStatus(translatedStatus)
+            favoriteModalView?.updateWeatherStatus(translatedStatus)
         }
         
         if let weatherIcon = currentWeather.weather.first?.main {
             let iconName = WeatherDataFormatter.shared.iconWeatherCondition(weatherIcon)
-            addRegionView?.updateWeatherIcon(iconName)
+            favoriteModalView?.updateWeatherIcon(iconName)
         }
-        
-        DispatchQueue.main.async {
-                    self.addRegionView?.collectionView.reloadData()
-                    self.addRegionView?.tableView.reloadData()
-                }
-    }
-    
-    @objc private func addButtonTapped() {
-        guard
-            let currentWeather = currentWeather,
-            let locationName = locationName,
-            let coordinate = coordinate 
-        else {
-            return
-        }
-        
-        let savedLocation = SavedLocation(
-            name: locationName,
-            latitude: coordinate.latitude,
-            longitude: coordinate.longitude,
-            temp: currentWeather.main.temp,
-            description: currentWeather.weather.first?.description ?? ""
-        )
-        
-        SavedLocationManager.shared.saveLocation(savedLocation)
-        
-        dismiss(animated: true) {
-            NotificationCenter.default.post(name: Notification.Name("LocationAdded"), object: nil)
-        }
-    }
-    
-    @objc private func cancelButtonTapped() {
-        self.dismiss(animated: true, completion: nil)
     }
 }
 
-
-
-extension AddRegionViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension FavoriteModalViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return WeatherDataFormatter.shared.filterThreeHourlyForecasts(forecastData).count
     }
@@ -164,7 +121,7 @@ extension AddRegionViewController: UICollectionViewDataSource, UICollectionViewD
     }
 }
 
-extension AddRegionViewController: UITableViewDataSource, UITableViewDelegate {
+extension FavoriteModalViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return WeatherDataFormatter.shared.filterForecastData(forecastData).count
     }
@@ -184,3 +141,7 @@ extension AddRegionViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
+
+
+
+

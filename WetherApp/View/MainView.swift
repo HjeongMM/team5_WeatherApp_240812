@@ -20,7 +20,6 @@ class MainView: UIView {
     
     let locationLabel: UILabel = {
         let label = UILabel()
-        label.text = "(검색된) 위치"
         label.textColor = .mainGreen
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16, weight: .light)
@@ -77,8 +76,7 @@ class MainView: UIView {
         return tableView
     }()
     
-    var addButton: UIButton?
-    var cancelButton: UIButton?
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,7 +93,7 @@ class MainView: UIView {
         [mainStackView, collectionView, tableView].forEach { addSubview($0) }
         
         mainStackView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(80)
+            $0.top.equalToSuperview().offset(60)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(340)
             $0.height.equalTo(300)
@@ -120,6 +118,28 @@ class MainView: UIView {
     
     
     //MARK: - 모달창으로 접근할 시 버튼 생성
+    var addButton: UIButton?
+    var cancelButton: UIButton?
+    var searchPageButton: UIButton?
+    
+    
+    func addSearchPageButton() {
+        guard searchPageButton == nil else { return }
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        button.tintColor = .mainGreen
+        
+        addSubview(button)
+        
+        button.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(60)
+            $0.width.height.equalTo(60)
+            $0.trailing.equalToSuperview().offset(-10)
+        }
+        
+        self.searchPageButton = button
+    }
+    
     func addCancelButton() {
         guard cancelButton == nil else { return }
         
@@ -131,8 +151,7 @@ class MainView: UIView {
         button.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
             $0.leading.equalToSuperview().offset(10)
-            $0.width.equalTo(50)
-            $0.height.equalTo(50)
+            $0.width.height.equalTo(50)
         }
         
         self.cancelButton = button
@@ -149,8 +168,7 @@ class MainView: UIView {
         button.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
             $0.trailing.equalToSuperview().offset(-10)
-            $0.width.equalTo(50)
-            $0.height.equalTo(50)
+            $0.width.height.equalTo(50)
         }
         
         self.addButton = button

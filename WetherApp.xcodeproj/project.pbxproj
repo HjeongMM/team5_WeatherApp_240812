@@ -38,6 +38,9 @@
 		E5ACDC612C6F64F400BB9484 /* UIColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACDC602C6F64F400BB9484 /* UIColorSet.swift */; };
 		E5ACDC632C6FA71400BB9484 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACDC622C6FA71400BB9484 /* LocationManager.swift */; };
 		E5B5A4692C73DE220001D304 /* FavoriteLocationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B5A4682C73DE220001D304 /* FavoriteLocationCollectionViewCell.swift */; };
+		E5B5A46B2C74DD0B0001D304 /* UserSavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B5A46A2C74DD0B0001D304 /* UserSavedLocation.swift */; };
+		E5B5A46D2C74F6090001D304 /* FavoriteModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B5A46C2C74F6090001D304 /* FavoriteModalViewController.swift */; };
+		E5B5A46F2C756A760001D304 /* ReusableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B5A46E2C756A760001D304 /* ReusableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +76,9 @@
 		E5ACDC602C6F64F400BB9484 /* UIColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorSet.swift; sourceTree = "<group>"; };
 		E5ACDC622C6FA71400BB9484 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocationManager.swift; path = WetherApp/Common/Services/LocationManager.swift; sourceTree = SOURCE_ROOT; };
 		E5B5A4682C73DE220001D304 /* FavoriteLocationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteLocationCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5B5A46A2C74DD0B0001D304 /* UserSavedLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSavedLocation.swift; sourceTree = "<group>"; };
+		E5B5A46C2C74F6090001D304 /* FavoriteModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteModalViewController.swift; sourceTree = "<group>"; };
+		E5B5A46E2C756A760001D304 /* ReusableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +163,7 @@
 				E55F9D572C72368A00436AC9 /* WeatherDataManager.swift */,
 				DA06DFB82C6B80D200C7265F /* CurrentWeatherResult.swift */,
 				C29FCEA62C72E81300F8951D /* LocationModel.swift */,
+				E5B5A46A2C74DD0B0001D304 /* UserSavedLocation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,6 +188,8 @@
 			isa = PBXGroup;
 			children = (
 				E5ACDC512C69E37E00BB9484 /* MainViewController.swift */,
+				E5B5A46C2C74F6090001D304 /* FavoriteModalViewController.swift */,
+				E5B5A46E2C756A760001D304 /* ReusableViewController.swift */,
 				C29F6DA32C6A35AA0081FA15 /* ListViewController.swift */,
 				C29FCEA42C72E3B600F8951D /* AddRegionViewController.swift */,
 			);
@@ -290,6 +299,7 @@
 				C29FCEA52C72E3B600F8951D /* AddRegionViewController.swift in Sources */,
 				45EBC6A12C6DD9EA006C107E /* RainView.swift in Sources */,
 				3C80C1CD2C6B627200341A90 /* ThreeHourlyCollectionViewCell.swift in Sources */,
+				E5B5A46F2C756A760001D304 /* ReusableViewController.swift in Sources */,
 				45EBC6992C6CC2F9006C107E /* FeelingTempView.swift in Sources */,
 				E55F9D562C7204ED00436AC9 /* WeatherDataFormatter.swift in Sources */,
 				C29FCEAB2C72F50D00F8951D /* AddRegionThreeHourlyCollectionViewCell.swift in Sources */,
@@ -299,6 +309,7 @@
 				C29FCEA72C72E81300F8951D /* LocationModel.swift in Sources */,
 				45EBC6952C6C8572006C107E /* TempView.swift in Sources */,
 				45EBC6A52C73069A006C107E /* WeatherMessageView.swift in Sources */,
+				E5B5A46D2C74F6090001D304 /* FavoriteModalViewController.swift in Sources */,
 				E5ACDC5F2C6F559F00BB9484 /* MainView.swift in Sources */,
 				E5ACDC522C69E37E00BB9484 /* MainViewController.swift in Sources */,
 				C29F6DA62C6A35B50081FA15 /* ListView.swift in Sources */,
@@ -308,6 +319,7 @@
 				E5ACDC362C69E1A700BB9484 /* AppDelegate.swift in Sources */,
 				E5B5A4692C73DE220001D304 /* FavoriteLocationCollectionViewCell.swift in Sources */,
 				45EBC69B2C6CE19B006C107E /* HumidityView.swift in Sources */,
+				E5B5A46B2C74DD0B0001D304 /* UserSavedLocation.swift in Sources */,
 				DA06DFB92C6B80D200C7265F /* CurrentWeatherResult.swift in Sources */,
 				E5ACDC612C6F64F400BB9484 /* UIColorSet.swift in Sources */,
 			);
